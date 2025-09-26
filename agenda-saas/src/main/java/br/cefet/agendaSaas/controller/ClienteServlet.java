@@ -1,17 +1,16 @@
 package br.cefet.agendaSaas.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import br.cefet.agendaSaas.dao.ClienteDAO;
 import br.cefet.agendaSaas.model.entidades.Cliente;
 import br.cefet.agendaSaas.model.enums.TipoUsuario;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "ClienteServlet", urlPatterns = {"/cliente"})
 public class ClienteServlet extends HttpServlet {
@@ -35,7 +34,7 @@ public class ClienteServlet extends HttpServlet {
 
             // Validação simples (pode ser melhorada)
             if (nome == null || email == null || senha == null || cpf == null ||
-                nome.isBlank() || email.isBlank() || senha.isBlank() || cpf.isBlank()) {
+                nome.trim().isEmpty() || email.trim().isEmpty() || senha.trim().isEmpty() || cpf.trim().isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.println("<h3>Erro: Todos os campos são obrigatórios!</h3>");
                 return;
