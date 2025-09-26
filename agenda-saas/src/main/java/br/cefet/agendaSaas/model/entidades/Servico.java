@@ -6,8 +6,24 @@ public class Servico {
     private String nome;
     private String descricao;
     private double preco;
+    private int prestadorId; // ID do prestador que oferece este serviço
 
     public Servico() {
+    }
+
+    public Servico(int id, String nome, String descricao, double preco, int prestadorId) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.prestadorId = prestadorId;
+    }
+
+    public Servico(String nome, String descricao, double preco, int prestadorId) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.prestadorId = prestadorId;
     }
 
     public Servico(int id, String nome, String descricao, double preco) {
@@ -64,6 +80,14 @@ public class Servico {
         this.preco = preco;
     }
 
+    public int getPrestadorId() {
+        return prestadorId;
+    }
+
+    public void setPrestadorId(int prestadorId) {
+        this.prestadorId = prestadorId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -86,6 +110,7 @@ public class Servico {
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
+                ", prestadorId=" + prestadorId +
                 '}';
     }
 }
