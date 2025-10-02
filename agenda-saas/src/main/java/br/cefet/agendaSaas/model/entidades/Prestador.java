@@ -1,10 +1,18 @@
 package br.cefet.agendaSaas.model.entidades;
-
 import br.cefet.agendaSaas.model.enums.TipoUsuario;
+import jakarta.persistence.*;
 
+@Entity
+@DiscriminatorValue("PRESTADOR")
 public class Prestador extends Usuario {
+
+    @Column(nullable = true)
     private String telefone;
+
+    @Column(nullable = true)
     private String especializacao;
+
+    @Column(nullable = false, unique = true)
     private String cnpj;
 
     public Prestador() {
