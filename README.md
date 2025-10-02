@@ -43,7 +43,7 @@ agenda-saas/
 
 ### 🔹 2. Clonar o Repositório
 ```bash
-git clone https://github.com/seu-usuario/agenda-saas.git
+git clone https://github.com/Sluvizottodev/agenda-saas-JAVA.git
 cd agenda-saas
 ```
 
