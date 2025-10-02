@@ -36,6 +36,12 @@
       <scope>provided</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>7.1.2.Final</version>
+    </dependency>
+
     <!-- JUnit para testes -->
     <dependency>
       <groupId>junit</groupId>
@@ -60,13 +66,14 @@
         </configuration>
       </plugin>
 
+
       <!-- Plugin WAR para empacotamento -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.3.2</version>
         <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml> <!-- Para Servlet 3+ -->
+          <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
     </plugins>
