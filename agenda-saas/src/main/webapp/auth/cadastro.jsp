@@ -117,6 +117,11 @@
                 <button class="btn btn-lg" type="submit">Cadastrar</button>
             </div>
         </form>
+        
+        <p style="text-align:center; margin-top:15px;">
+            Já tem conta? <a href="login.jsp">Fazer Login</a><br>
+            <a href="../index.jsp" style="font-size: 0.9em; color: #666;">← Voltar à página inicial</a>
+        </p>
     </div>
 </main>
 
