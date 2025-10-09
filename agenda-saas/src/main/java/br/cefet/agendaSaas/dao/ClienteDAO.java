@@ -49,7 +49,7 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Em produção, use um Logger
+            e.printStackTrace();
         }
 
         return false;
