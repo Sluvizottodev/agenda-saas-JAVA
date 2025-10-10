@@ -1,32 +1,24 @@
 package br.cefet.agendaSaas.model.entidades;
 
 import br.cefet.agendaSaas.model.enums.TipoUsuario;
-import jakarta.persistence.*;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Transient;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) 
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
-public abstract class Usuario extends Usuario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+public abstract class Usuario extends Entidade {
 
     protected String nome;
     protected String email;
     protected String senha;
 
-
     @Transient
     protected TipoUsuario tipo;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

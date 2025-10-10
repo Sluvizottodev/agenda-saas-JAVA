@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/dashboard/prestador")
-public class DashboardPrestadorServlet extends HttpServlet {
+public class DashboardPrestadorServlet extends GenericServlet {
 
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();

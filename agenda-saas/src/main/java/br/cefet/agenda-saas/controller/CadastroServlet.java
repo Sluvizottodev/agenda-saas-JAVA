@@ -9,7 +9,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/auth/cadastro")
-public class CadastroServlet extends HttpServlet {
+public class CadastroServlet extends GenericServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,7 +28,6 @@ public class CadastroServlet extends HttpServlet {
             cliente.setSenha(senha);
             cliente.setCpf(cpf);
 
-            // TODO: salvar no banco
             System.out.println("Cliente cadastrado: " + cliente.getNome());
 
         } else if ("prestador".equalsIgnoreCase(tipoUsuario)) {
@@ -43,8 +42,7 @@ public class CadastroServlet extends HttpServlet {
             prestador.setTelefone(telefone);
             prestador.setEspecializacao(especializacao);
             prestador.setCnpj(cnpj);
-
-            // TODO: salvar no banco
+            
             System.out.println("Prestador cadastrado: " + prestador.getNome());
 
         } else {

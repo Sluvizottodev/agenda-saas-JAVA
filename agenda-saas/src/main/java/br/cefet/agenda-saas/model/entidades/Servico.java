@@ -1,12 +1,21 @@
 package br.cefet.agendaSaas.model.entidades;
 
-public class Servico {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
-    private int id;
+@Entity
+@Table(name = "servico")
+public class Servico extends Entidade {
+
     private String nome;
+
     private String descricao;
+
     private double preco;
-    private int prestadorId; // ID do prestador que oferece este serviço
+
+    @Column(name = "prestador_id")
+    private Integer prestadorId;
 
     public Servico() {
     }
@@ -39,13 +48,7 @@ public class Servico {
         this.preco = preco;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -80,11 +83,11 @@ public class Servico {
         this.preco = preco;
     }
 
-    public int getPrestadorId() {
+    public Integer getPrestadorId() {
         return prestadorId;
     }
 
-    public void setPrestadorId(int prestadorId) {
+    public void setPrestadorId(Integer prestadorId) {
         this.prestadorId = prestadorId;
     }
 

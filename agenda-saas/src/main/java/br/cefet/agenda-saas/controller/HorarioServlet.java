@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet({ "/horarios", "/horarios/cadastrar", "/horarios/editar", "/horarios/remover", "/horarios/gerar" })
-public class HorarioServlet extends HttpServlet {
+public class HorarioServlet extends GenericServlet {
 
     private final HorarioService horarioService = new HorarioService();
 

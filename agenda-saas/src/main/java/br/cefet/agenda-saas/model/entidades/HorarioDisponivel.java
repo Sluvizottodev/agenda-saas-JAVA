@@ -3,12 +3,24 @@ package br.cefet.agendaSaas.model.entidades;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class HorarioDisponivel {
-    private int id;
-    private int prestadorId;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "horario_disponivel")
+public class HorarioDisponivel extends Entidade {
+    @Column(name = "prestador_id")
+    private Integer prestadorId;
+
     private LocalDate data;
+
+    @Column(name = "hora_inicio")
     private LocalTime horaInicio;
+
+    @Column(name = "hora_fim")
     private LocalTime horaFim;
+
     private boolean disponivel;
 
     public HorarioDisponivel() {
@@ -32,19 +44,13 @@ public class HorarioDisponivel {
     }
 
     // Getters e Setters
-    public int getId() {
-        return id;
-    }
+    // id herdado de Entidade
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getPrestadorId() {
+    public Integer getPrestadorId() {
         return prestadorId;
     }
 
-    public void setPrestadorId(int prestadorId) {
+    public void setPrestadorId(Integer prestadorId) {
         this.prestadorId = prestadorId;
     }
 
@@ -92,7 +98,6 @@ public class HorarioDisponivel {
         this.disponivel = disponivel;
     }
 
-    // Métodos úteis
     public boolean isHorarioConflitante(LocalTime horaInicio, LocalTime horaFim) {
         return !(horaFim.isBefore(this.horaInicio) || horaInicio.isAfter(this.horaFim));
     }

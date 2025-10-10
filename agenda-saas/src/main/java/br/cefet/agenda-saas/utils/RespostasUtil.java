@@ -1,5 +1,5 @@
 package br.cefet.agendaSaas.utils;
 
-public class RepostasUtil {
+public class RespostasUtil {
     
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import br.cefet.agendaSaas.model.entidades.Agendamento;
 
 @WebServlet("/dashboard/cliente")
-public class DashboardClienteServlet extends HttpServlet {
+public class DashboardClienteServlet extends GenericServlet {
 
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();

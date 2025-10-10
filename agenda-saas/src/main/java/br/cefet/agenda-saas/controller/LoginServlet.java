@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/auth/login")
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends GenericServlet {
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     @Override
@@ -27,7 +27,6 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("usuarioLogado", usuario);
 
-            // Redireciona conforme o tipo
             switch (usuario.getTipo()) {
                 case CLIENTE:
                     response.sendRedirect(request.getContextPath() + "/cliente/dashboard.jsp");

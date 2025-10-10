@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet({ "/agendar", "/agendamentos" })
-public class AgendamentoServlet extends HttpServlet {
+public class AgendamentoServlet extends GenericServlet {
 
     private final AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     private final ServicoDAO servicoDAO = new ServicoDAO();

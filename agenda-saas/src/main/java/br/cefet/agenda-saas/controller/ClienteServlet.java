@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "ClienteServlet", urlPatterns = {"/cliente"})
-public class ClienteServlet extends HttpServlet {
+public class ClienteServlet extends GenericServlet {
 
     private final ClienteDAO clienteDAO = new ClienteDAO();
 

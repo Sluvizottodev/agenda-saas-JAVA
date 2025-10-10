@@ -2,12 +2,25 @@ package br.cefet.agendaSaas.model.entidades;
 
 import java.time.LocalDateTime;
 
-public class Agendamento {
-    private int id;
-    private int clienteId;
-    private int prestadorId;
-    private int servicoId;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "agendamento")
+public class Agendamento extends Entidade {
+    @Column(name = "cliente_id")
+    private Integer clienteId;
+
+    @Column(name = "prestador_id")
+    private Integer prestadorId;
+
+    @Column(name = "servico_id")
+    private Integer servicoId;
+
+    @Column(name = "data_hora")
     private LocalDateTime dataHora;
+
     private String status;
 
     public Agendamento() {
@@ -22,35 +35,29 @@ public class Agendamento {
     }
 
     // Getters e Setters
-    public int getId() {
-        return id;
-    }
+    // id herdado de Entidade
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getClienteId() {
+    public Integer getClienteId() {
         return clienteId;
     }
 
-    public void setClienteId(int clienteId) {
+    public void setClienteId(Integer clienteId) {
         this.clienteId = clienteId;
     }
 
-    public int getPrestadorId() {
+    public Integer getPrestadorId() {
         return prestadorId;
     }
 
-    public void setPrestadorId(int prestadorId) {
+    public void setPrestadorId(Integer prestadorId) {
         this.prestadorId = prestadorId;
     }
 
-    public int getServicoId() {
+    public Integer getServicoId() {
         return servicoId;
     }
 
-    public void setServicoId(int servicoId) {
+    public void setServicoId(Integer servicoId) {
         this.servicoId = servicoId;
     }
 
