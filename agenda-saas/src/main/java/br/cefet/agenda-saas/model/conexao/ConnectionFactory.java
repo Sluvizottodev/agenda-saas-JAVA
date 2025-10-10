@@ -6,9 +6,21 @@ import java.sql.SQLException;
 
 
 public class ConnectionFactory {
-    private static final String URL = "jdbc:mysql://localhost:3306/agenda_saas";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String URL = createUrl();
+    private static final String USER = getenvOrDefault("DB_USER", "root");
+    private static final String PASSWORD = getenvOrDefault("DB_PASSWORD", "");
+
+    private static String createUrl() {
+        String host = getenvOrDefault("DB_HOST", "localhost");
+        String port = getenvOrDefault("DB_PORT", "3306");
+        String db = getenvOrDefault("DB_NAME", "agenda_saas");
+        return String.format("jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC", host, port, db);
+    }
+
+    private static String getenvOrDefault(String name, String defaultValue) {
+        String v = System.getenv(name);
+        return (v == null || v.isEmpty()) ? defaultValue : v;
+    }
 
     public static Connection getConnection() {
         try {
