@@ -1,5 +1,8 @@
 package br.cefet.agendaSaas.model.enums;
 
-public class StatusAgendamento {
-    
+public enum StatusAgendamento {
+	PENDENTE,
+	CONFIRMADO,
+	CANCELADO,
+	CONCLUIDO;
 }

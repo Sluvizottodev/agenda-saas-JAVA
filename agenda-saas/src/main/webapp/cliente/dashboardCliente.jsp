@@ -1,72 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard - Cliente | AgendaSaaS</title>
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        main {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="pageTitle" value="Dashboard - Cliente | AgendaSaaS" />
+<c:set var="pageRole" value="Cliente" />
+<jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
-        h2 {
-            color: var(--cor-primaria);
-        }
-
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .card {
-            flex: 1 1 300px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: var(--sombra-padrao);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table th, table td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 18px;
-            background-color: var(--cor-primaria);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-        }
-
-        @media (max-width: 768px) {
-            .cards {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-<header>
-    <h1>AgendaSaaS - Cliente</h1>
-    <p>Bem-vindo, <strong>${cliente.nome}</strong></p>
-</header>
-
-<main>
     <h2>Seus Agendamentos</h2>
     <div class="cards">
         <div class="card">
@@ -116,10 +53,5 @@
             </table>
         </div>
     </div>
-</main>
 
-<footer>
-    &copy; 2025 AgendaSaaS
-</footer>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/includes/footer.jsp" />

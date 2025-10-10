@@ -1,5 +1,7 @@
 package br.cefet.agendaSaas.model.enums;
 
-public class TipoNotificacao {
-    
+public enum TipoNotificacao {
+	AGENDAMENTO,
+	PAGAMENTO,
+	SISTEMA;
 }
