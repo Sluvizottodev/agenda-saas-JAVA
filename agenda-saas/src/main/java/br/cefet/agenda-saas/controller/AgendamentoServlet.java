@@ -11,6 +11,9 @@ import br.cefet.agendaSaas.dao.AgendamentoDAO;
 import br.cefet.agendaSaas.dao.ServicoDAO;
 import br.cefet.agendaSaas.model.entidades.Agendamento;
 import br.cefet.agendaSaas.model.entidades.Cliente;
+import br.cefet.agendaSaas.model.entidades.Prestador;
+import br.cefet.agendaSaas.dao.UsuarioDAO;
+import br.cefet.agendaSaas.utils.EmailUtils;
 import br.cefet.agendaSaas.model.entidades.Servico;
 import br.cefet.agendaSaas.model.entidades.Usuario;
 import jakarta.servlet.ServletException;
@@ -42,13 +45,11 @@ public class AgendamentoServlet extends GenericServlet {
 
         try {
             if ("/agendar".equals(action)) {
-                // Carregar página de novo agendamento
                 List<Servico> servicosDisponiveis = servicoDAO.listarTodos();
                 request.setAttribute("servicosDisponiveis", servicosDisponiveis);
                 request.getRequestDispatcher("/agendar.jsp").forward(request, response);
 
             } else if ("/agendamentos".equals(action)) {
-                // Listar agendamentos do usuário
                 List<Agendamento> agendamentos;
 
                 if (usuario instanceof Cliente) {
@@ -81,7 +82,6 @@ public class AgendamentoServlet extends GenericServlet {
             return;
         }
 
-        // Apenas clientes podem criar agendamentos
         if (!(usuario instanceof Cliente)) {
             request.setAttribute("erro", "Apenas clientes podem fazer agendamentos.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
@@ -89,13 +89,11 @@ public class AgendamentoServlet extends GenericServlet {
         }
 
         try {
-            // Obter parâmetros do formulário
             String servicoIdParam = request.getParameter("servicoId");
             String dataParam = request.getParameter("data");
             String horaParam = request.getParameter("hora");
             String observacoes = request.getParameter("observacoes");
 
-            // Validar parâmetros
             if (servicoIdParam == null || dataParam == null || horaParam == null) {
                 throw new IllegalArgumentException("Todos os campos obrigatórios devem ser preenchidos.");
             }
@@ -105,29 +103,40 @@ public class AgendamentoServlet extends GenericServlet {
             LocalTime hora = LocalTime.parse(horaParam);
             LocalDateTime dataHora = LocalDateTime.of(data, hora);
 
-            // Validar se a data/hora é futura
             if (dataHora.isBefore(LocalDateTime.now())) {
                 throw new IllegalArgumentException("A data e horário devem ser futuros.");
             }
 
-            // Buscar informações do serviço
             Servico servico = servicoDAO.buscarPorId(servicoId);
             if (servico == null) {
                 throw new IllegalArgumentException("Serviço não encontrado.");
             }
 
-            // Criar o agendamento
             Agendamento agendamento = new Agendamento();
             agendamento.setClienteId(usuario.getId());
             agendamento.setPrestadorId(servico.getPrestadorId());
             agendamento.setServicoId(servicoId);
             agendamento.setDataHora(dataHora);
-            agendamento.setStatus("PENDENTE");
+            agendamento.setStatus(br.cefet.agendaSaas.model.enums.StatusAgendamento.PENDENTE.name());
 
-            // Salvar no banco de dados
             boolean sucesso = agendamentoDAO.inserir(agendamento);
 
             if (sucesso) {
+                try {
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+                    Prestador prestador = null;
+                    try {
+                        prestador = (Prestador) usuarioDAO.buscarPorId(agendamento.getPrestadorId());
+                    } catch (Exception e) {
+                        prestador = null;
+                    }
+
+                    Cliente clienteObj = (Cliente) usuario; // já é cliente
+                    EmailUtils.notifyAgendamentoAsync(agendamento, servico, prestador, clienteObj);
+                } catch (Throwable t) {
+                    System.err.println("Falha ao disparar notificações por e-mail: " + t.getMessage());
+                }
+
                 request.setAttribute("mensagem",
                         "Agendamento realizado com sucesso! Seu agendamento está pendente de confirmação.");
                 request.setAttribute("agendamento", agendamento);
