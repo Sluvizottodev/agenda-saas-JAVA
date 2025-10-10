@@ -1,58 +1,88 @@
-AgendaSaaS
+Agenda SaaS
 ===========
 
-Como o sistema funciona (fluxo detalhado)
-----------------------------------------
-Este projeto segue um padrão simples baseado em Servlets, DAOs e JSPs. Abaixo está o ciclo completo de processamento de uma requisição típica:
+Aplicação para gerenciamento de agendas e compromissos, desenvolvida em Java com Maven, JSP/Servlets e deploy em Apache Tomcat.
 
-1. Requisição HTTP
-	- O usuário (navegador) acessa uma URL do sistema.
-	- O servlet container (Tomcat) recebe a requisição e a roteia para o `Servlet` configurado em `web.xml` ou através de anotações.
+Resumo rápido
+-------------
+- Cadastro e autenticação de usuários
+- Criação, edição e exclusão de compromissos
+- Listagem organizada de compromissos
+- Interface web baseada em JSP
 
-2. Filtros e autenticação (não implementado ainda)
-	- Antes do `Servlet` ser executado, filtros (ex.: `AuthFilter`, `RoleFilter`) podem interceptar a requisição para validar sessão, token ou permissões.
+Requisitos mínimos
+------------------
+- Java 11+
+- Maven
+- Apache Tomcat 9+ (ou execução via IDE)
 
-3. Servlet / Controller
-	- O `Servlet` responsável (ex.: `AgendamentoServlet`, `ClienteServlet`) recupera parâmetros da requisição (`request.getParameter(...)`), valida entradas e constrói objetos de domínio quando necessário.
-	- O `Servlet` delega a lógica de negócio para classes de `service` (quando presentes). Serviços encapsulam regras e orquestram chamadas a múltiplos DAOs quando preciso.
+Estrutura principal
+-------------------
+```
+agenda-saas/
+ ├── src/main/java/...   # Código fonte (servlets, controllers, models, daos)
+ ├── src/main/webapp/    # JSPs, CSS, JS
+ ├── src/test/           # Testes JUnit
+ ├── init-database.sql   # Script para esquema
+ ├── pom.xml             # Build Maven
+ └── README.md
+```
 
-4. DAO (persistência)
-	- As classes em `br.cefet.agendaSaas.dao` executam operações SQL usando JDBC.
-	- Para obter conexão, os DAOs usam `ConnectionFactory.getConnection()` (que monta a URL e chama `DriverManager.getConnection(...)`).
-	- Os DAOs usam `PreparedStatement` para prevenir SQL injection, mapeiam `ResultSet` para entidades e garantem fechamento de recursos via try-with-resources.
+Instalação e execução rápida
+---------------------------
+1. Clone o repositório e entre na pasta:
 
-5. Banco de dados
-	- O banco (MySQL) executa as queries e mantém integridade referencial (FKs). Os DAOs recebem os resultados e convertem em objetos Java.
+```bash
+git clone https://github.com/Sluvizottodev/agenda-saas-JAVA.git
+cd agenda-saas
+```
 
-6. Retorno ao Servlet
-	- O `Servlet` recebe os objetos resultantes (ou flags de sucesso/falha) e decide a próxima etapa: redirecionar, forward para JSP ou retornar JSON.
-
-7. View (JSP)
-	- Quando o fluxo envolve renderização de páginas, o `Servlet` encaminha (faz forward via `RequestDispatcher`) para um JSP em `src/main/webapp` (ex.: `cliente/dashboardCliente.jsp`).
-	- Os JSPs usam JSTL e EL para apresentar os dados (por exemplo, listas de agendamentos), e são renderizados pelo servlet container para HTML final.
-
-8. Resposta ao cliente
-	- O HTML gerado é enviado ao navegador. O usuário vê a página resultante e pode interagir novamente.
-
-Como rodar localmente (rápido)
------------------------------
-1. Copie o template de variáveis e ajuste conforme seu ambiente:
+2. Configure as variáveis de ambiente (ou copie `.env.example` para `.env`):
 
 ```bash
 cp .env.example .env
-# editar .env com DB_USER/DB_PASSWORD e outros valores conforme seu ambiente local
-```
-
-2. Build e deploy (via Maven):
+# Edite .env para apontar para seu banco local
+3. Compile e empacote:
 
 ```bash
 mvn clean package
-# copie o WAR gerado para o Tomcat ou rode via IDE
 ```
 
-Executando testes
------------------
-Os testes JUnit podem usar um banco local configurado nas variáveis de ambiente. Execute:
+4. Faça o deploy do WAR no Tomcat (ou rode a aplicação via IDE) e acesse:
+
+```
+http://localhost:8080/agenda-saas
+```
+
+Como o sistema funciona (fluxo)
+------------------------------
+O ciclo de uma requisição segue estas etapas:
+
+1) Recepção
+- O navegador faz uma requisição HTTP.
+- O servidor (Tomcat) encaminha para o `Servlet` configurado para a rota.
+
+2) Filtros (opcional)
+- Filtros como autenticação ou autorização podem interceptar e validar a requisição antes do servlet.
+
+3) Servlet / Controller
+- O servlet lê parâmetros (`request.getParameter(...)`), valida e chama serviços/DAOs.
+
+4) Camada de persistência (DAO)
+- Os DAOs executam queries via JDBC e mapeiam resultados para entidades Java.
+- Use sempre `PreparedStatement` e try-with-resources para evitar leaks.
+
+5) Resposta / View
+- O servlet decide a resposta: JSON, redirect, ou renderização de JSP.
+- Para renderizar uma página, o servlet geralmente encaminha para o JSP usando `RequestDispatcher.forward` (ex.: `request.getRequestDispatcher("/cliente/dashboardCliente.jsp").forward(request, response);`).
+- Para redirecionar o navegador para outra URL, use `response.sendRedirect(...)`.
+
+6) Retorno ao cliente
+- HTML/JSON é enviado ao cliente e o ciclo se repete conforme interações do usuário.
+
+Testes
+------
+Execute os testes com:
 
 ```bash
 mvn test
