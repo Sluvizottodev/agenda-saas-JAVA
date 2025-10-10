@@ -1,5 +1,8 @@
 package br.cefet.agendaSaas.model.enums;
 
-public class StatusPagamento {
-    
+public enum StatusPagamento {
+	PENDENTE,
+	PAGO,
+	CANCELADO,
+	ESTORNADO;
 }
