@@ -4,15 +4,15 @@
 <c:set var="pageRole" value="Prestador" />
 <jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
-    <h2>Seus Serviços</h2>
+    <h2>Seus ServiÃ§os</h2>
     <div class="cards">
         <div class="card">
             <table>
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Preço</th>
+                        <th>DescriÃ§Ã£o</th>
+                        <th>PreÃ§o</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,7 +25,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <a href="servicoCadastro.jsp" class="btn">Adicionar Novo Serviço</a>
+            <a href="servicoCadastro.jsp" class="btn">Adicionar Novo ServiÃ§o</a>
         </div>
 
         <div class="card">
@@ -52,3 +52,4 @@
     </div>
 
 <jsp:include page="/WEB-INF/views/includes/footer.jsp" />
+

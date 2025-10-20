@@ -11,7 +11,7 @@
                 <thead>
                     <tr>
                         <th>Prestador</th>
-                        <th>Serviço</th>
+                        <th>ServiÃ§o</th>
                         <th>Data</th>
                         <th>Status</th>
                     </tr>
@@ -30,14 +30,14 @@
         </div>
 
         <div class="card">
-            <h3>Serviços Disponíveis</h3>
+            <h3>ServiÃ§os DisponÃ­veis</h3>
             <table>
                 <thead>
                     <tr>
                         <th>Prestador</th>
-                        <th>Serviço</th>
-                        <th>Preço</th>
-                        <th>Ação</th>
+                        <th>ServiÃ§o</th>
+                        <th>PreÃ§o</th>
+                        <th>AÃ§Ã£o</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,3 +55,4 @@
     </div>
 
 <jsp:include page="/WEB-INF/views/includes/footer.jsp" />
+

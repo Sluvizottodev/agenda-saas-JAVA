@@ -109,7 +109,7 @@
 
     <main>
         <div class="error-container">
-            <div class="error-icon">⚠️</div>
+            <div class="error-icon">âš ï¸</div>
             
             <h2 class="error-title">Oops! Algo deu errado</h2>
             
@@ -124,7 +124,7 @@
                     }
                     
                     if (errorMessage == null) {
-                        errorMessage = "Ocorreu um erro inesperado durante o processamento da sua solicitação.";
+                        errorMessage = "Ocorreu um erro inesperado durante o processamento da sua solicitaÃ§Ã£o.";
                     }
                     
                     if (statusCode == null) {
@@ -136,18 +136,18 @@
                 <p><%= errorMessage %></p>
                 
                 <% if (statusCode != null && statusCode != 200) { %>
-                    <p>Código do erro: <span class="error-code"><%= statusCode %></span></p>
+                    <p>CÃ³digo do erro: <span class="error-code"><%= statusCode %></span></p>
                 <% } %>
             </div>
 
             <% if (errorType != null || (exception != null && !"production".equals(application.getInitParameter("environment")))) { %>
                 <div class="error-details">
-                    <h4>Detalhes Técnicos:</h4>
+                    <h4>Detalhes TÃ©cnicos:</h4>
                     <% if (errorType != null) { %>
                         <p><strong>Tipo:</strong> <%= errorType %></p>
                     <% } %>
                     <% if (exception != null && !"production".equals(application.getInitParameter("environment"))) { %>
-                        <p><strong>Exceção:</strong> <%= exception.getClass().getSimpleName() %></p>
+                        <p><strong>ExceÃ§Ã£o:</strong> <%= exception.getClass().getSimpleName() %></p>
                         <% if (exception.getMessage() != null) { %>
                             <p><strong>Mensagem:</strong> <%= exception.getMessage() %></p>
                         <% } %>
@@ -157,9 +157,9 @@
 
             <div class="action-buttons">
                 <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
-                <a href="${pageContext.request.contextPath}/" class="btn">Página Inicial</a>
+                <a href="${pageContext.request.contextPath}/" class="btn">PÃ¡gina Inicial</a>
                 <% 
-                    // Verifica se há um usuário logado para mostrar o dashboard apropriado
+                    // Verifica se hÃ¡ um usuÃ¡rio logado para mostrar o dashboard apropriado
                     Object usuarioLogado = session.getAttribute("usuarioLogado");
                     if (usuarioLogado != null) {
                 %>
@@ -173,7 +173,8 @@
 
     <footer style="text-align: center; padding: 20px; color: #666; margin-top: 40px;">
         <p>&copy; 2025 AgendaSaaS - Sistema de Agendamento Online</p>
-        <p>Se o problema persistir, entre em contato com o suporte técnico.</p>
+        <p>Se o problema persistir, entre em contato com o suporte tÃ©cnico.</p>
     </footer>
 </body>
 </html>
+

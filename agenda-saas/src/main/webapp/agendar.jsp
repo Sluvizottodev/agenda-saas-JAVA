@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="br.cefet.agendaSaas.model.entidades.Usuario" %>
-<%@ page import="br.cefet.agendaSaas.model.entidades.Servico" %>
+<%@ page import="br.cefet.agendasaas.model.entidades.Usuario" %>
+<%@ page import="br.cefet.agendasaas.model.entidades.Servico" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -157,12 +157,12 @@
     </style>
     <script>
         function selecionarServico(servicoId, elemento) {
-            // Remove seleção anterior
+            // Remove seleÃ§Ã£o anterior
             document.querySelectorAll('.servico-card').forEach(card => {
                 card.classList.remove('selected');
             });
             
-            // Adiciona seleção atual
+            // Adiciona seleÃ§Ã£o atual
             elemento.classList.add('selected');
             
             // Marca o radio button
@@ -175,7 +175,7 @@
             const hora = document.getElementById('hora').value;
 
             if (!servicoSelecionado) {
-                alert('Por favor, selecione um serviço.');
+                alert('Por favor, selecione um serviÃ§o.');
                 return false;
             }
 
@@ -185,23 +185,23 @@
             }
 
             if (!hora) {
-                alert('Por favor, selecione um horário.');
+                alert('Por favor, selecione um horÃ¡rio.');
                 return false;
             }
 
-            // Validar se a data não é no passado
+            // Validar se a data nÃ£o Ã© no passado
             const dataHora = new Date(data + 'T' + hora);
             const agora = new Date();
 
             if (dataHora <= agora) {
-                alert('A data e horário devem ser futuros.');
+                alert('A data e horÃ¡rio devem ser futuros.');
                 return false;
             }
 
             return true;
         }
 
-        // Definir data mínima como hoje
+        // Definir data mÃ­nima como hoje
         window.addEventListener('DOMContentLoaded', function() {
             const hoje = new Date().toISOString().split('T')[0];
             document.getElementById('data').min = hoje;
@@ -231,7 +231,7 @@
 
     <main>
         <div class="agendamento-container">
-            <h2>Agendar Novo Serviço</h2>
+            <h2>Agendar Novo ServiÃ§o</h2>
 
             <% if (mensagem != null) { %>
                 <div class="alert alert-success">
@@ -247,7 +247,7 @@
 
             <form action="${pageContext.request.contextPath}/agendar" method="post" onsubmit="return validarFormulario()">
                 <div class="form-group">
-                    <label>Selecione o Serviço:</label>
+                    <label>Selecione o ServiÃ§o:</label>
                     <% if (servicosDisponiveis != null && !servicosDisponiveis.isEmpty()) { %>
                         <% for (Servico servico : servicosDisponiveis) { %>
                             <div class="servico-card" onclick="selecionarServico(<%= servico.getId() %>, this)">
@@ -263,7 +263,7 @@
                         <% } %>
                     <% } else { %>
                         <div class="alert alert-info">
-                            <p>Nenhum serviço disponível no momento. Entre em contato conosco para mais informações.</p>
+                            <p>Nenhum serviÃ§o disponÃ­vel no momento. Entre em contato conosco para mais informaÃ§Ãµes.</p>
                         </div>
                     <% } %>
                 </div>
@@ -276,9 +276,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="hora">Horário:</label>
+                            <label for="hora">HorÃ¡rio:</label>
                             <select id="hora" name="hora" required>
-                                <option value="">Selecione um horário</option>
+                                <option value="">Selecione um horÃ¡rio</option>
                                 <option value="08:00">08:00</option>
                                 <option value="08:30">08:30</option>
                                 <option value="09:00">09:00</option>
@@ -302,8 +302,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="observacoes">Observações (opcional):</label>
-                        <textarea id="observacoes" name="observacoes" rows="4" placeholder="Descreva alguma observação especial sobre o agendamento..."></textarea>
+                        <label for="observacoes">ObservaÃ§Ãµes (opcional):</label>
+                        <textarea id="observacoes" name="observacoes" rows="4" placeholder="Descreva alguma observaÃ§Ã£o especial sobre o agendamento..."></textarea>
                     </div>
 
                     <div class="btn-group">
@@ -320,3 +320,4 @@
     </footer>
 </body>
 </html>
+

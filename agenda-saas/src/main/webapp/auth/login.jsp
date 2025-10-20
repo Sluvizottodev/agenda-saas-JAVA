@@ -30,8 +30,8 @@
             </div>
         </form>
         <p style="text-align:center; margin-top:10px;">
-            Ainda não tem conta? <a href="cadastro.jsp">Cadastre-se</a><br>
-            <a href="../index.jsp" style="font-size: 0.9em; color: #666;">← Voltar à página inicial</a>
+            Ainda nÃ£o tem conta? <a href="cadastro.jsp">Cadastre-se</a><br>
+            <a href="../index.jsp" style="font-size: 0.9em; color: #666;">â† Voltar Ã  pÃ¡gina inicial</a>
         </p>
     </div>
 </main>
@@ -41,3 +41,4 @@
 </footer>
 </body>
 </html>
+

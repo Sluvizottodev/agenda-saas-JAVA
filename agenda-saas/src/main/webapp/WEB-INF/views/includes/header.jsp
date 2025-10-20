@@ -62,14 +62,15 @@
 </head>
 <body>
 <header>
-    <h1>AgendaSaaS - <c:out value="${pageRole}" default="Área"/></h1>
+    <h1>AgendaSaaS - <c:out value="${pageRole}" default="Ãrea"/></h1>
     <p>Bem-vindo, <strong>
         <c:choose>
             <c:when test="${not empty cliente}">${cliente.nome}</c:when>
             <c:when test="${not empty prestador}">${prestador.nome}</c:when>
-            <c:otherwise><c:out value="${userName}" default="Usuário"/></c:otherwise>
+            <c:otherwise><c:out value="${userName}" default="UsuÃ¡rio"/></c:otherwise>
         </c:choose>
     </strong></p>
 </header>
 
 <main>
+

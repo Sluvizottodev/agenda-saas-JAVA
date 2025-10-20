@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="br.cefet.agendaSaas.model.entidades.HorarioDisponivel" %>
+<%@ page import="br.cefet.agendasaas.model.entidades.HorarioDisponivel" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Horários - AgendaSaaS</title>
+    <title>Meus HorÃ¡rios - AgendaSaaS</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
     <style>
         .horarios-container {
@@ -132,7 +132,7 @@
     </style>
     <script>
         function confirmarRemocao(id, data, hora) {
-            if (confirm('Tem certeza que deseja remover o horário do dia ' + data + ' às ' + hora + '?')) {
+            if (confirm('Tem certeza que deseja remover o horÃ¡rio do dia ' + data + ' Ã s ' + hora + '?')) {
                 window.location.href = '${pageContext.request.contextPath}/horarios/remover?id=' + id;
             }
         }
@@ -151,7 +151,7 @@
 
     <header>
         <h1>AgendaSaaS</h1>
-        <p>Gerenciar Horários Disponíveis</p>
+        <p>Gerenciar HorÃ¡rios DisponÃ­veis</p>
         <div style="text-align: right;">
             <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
         </div>
@@ -160,13 +160,13 @@
     <main>
         <div class="horarios-container">
             <div class="header-actions">
-                <h2>Meus Horários</h2>
+                <h2>Meus HorÃ¡rios</h2>
                 <div class="btn-group">
                     <a href="${pageContext.request.contextPath}/horarios/cadastrar" class="btn">
-                        Novo Horário
+                        Novo HorÃ¡rio
                     </a>
                     <a href="${pageContext.request.contextPath}/horarios/gerar" class="btn btn-secondary">
-                        Gerar Horários
+                        Gerar HorÃ¡rios
                     </a>
                 </div>
             </div>
@@ -189,10 +189,10 @@
                         <thead>
                             <tr>
                                 <th>Data</th>
-                                <th>Hora Início</th>
+                                <th>Hora InÃ­cio</th>
                                 <th>Hora Fim</th>
                                 <th>Status</th>
-                                <th>Ações</th>
+                                <th>AÃ§Ãµes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -203,7 +203,7 @@
                                     <td><%= horario.getHoraFim().format(timeFormatter) %></td>
                                     <td>
                                         <span class="status-badge <%= horario.isDisponivel() ? "status-disponivel" : "status-ocupado" %>">
-                                            <%= horario.isDisponivel() ? "Disponível" : "Ocupado" %>
+                                            <%= horario.isDisponivel() ? "DisponÃ­vel" : "Ocupado" %>
                                         </span>
                                     </td>
                                     <td>
@@ -225,10 +225,10 @@
                 </div>
             <% } else { %>
                 <div class="empty-state">
-                    <p>Você ainda não cadastrou nenhum horário disponível.</p>
+                    <p>VocÃª ainda nÃ£o cadastrou nenhum horÃ¡rio disponÃ­vel.</p>
                     <p>
                         <a href="${pageContext.request.contextPath}/horarios/cadastrar" class="btn">
-                            Cadastrar Primeiro Horário
+                            Cadastrar Primeiro HorÃ¡rio
                         </a>
                     </p>
                 </div>

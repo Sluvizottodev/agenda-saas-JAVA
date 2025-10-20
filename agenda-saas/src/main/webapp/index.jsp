@@ -86,8 +86,8 @@
         
         <div style="margin-top: 30px; padding: 15px; background: #e8f5e8; border: 1px solid #4CAF50; border-radius: 6px; text-align: center;">
             <p style="margin: 0; color: #2e7d32;">
-                ✅ <strong>Servidor funcionando!</strong><br>
-                <small>AgendaSaaS está rodando em http://localhost:8080/agenda-saas/</small>
+                âœ… <strong>Servidor funcionando!</strong><br>
+                <small>AgendaSaaS estÃ¡ rodando em http://localhost:8080/agenda-saas/</small>
             </p>
         </div>
     </main>
@@ -97,3 +97,4 @@
     </footer>
 </body>
 </html>
+

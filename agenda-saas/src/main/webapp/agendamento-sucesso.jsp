@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="br.cefet.agendaSaas.model.entidades.Agendamento" %>
+<%@ page import="br.cefet.agendasaas.model.entidades.Agendamento" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -157,7 +157,7 @@
 
     <main>
         <div class="sucesso-container">
-            <div class="sucesso-icon">✅</div>
+            <div class="sucesso-icon">âœ…</div>
             
             <h2 class="sucesso-titulo">Agendamento Confirmado!</h2>
             
@@ -170,13 +170,13 @@
                     <h3>Detalhes do Agendamento</h3>
                     
                     <div class="detalhe-item">
-                        <span class="detalhe-label">Número do Agendamento:</span>
+                        <span class="detalhe-label">NÃºmero do Agendamento:</span>
                         <span class="detalhe-valor">#<%= agendamento.getId() %></span>
                     </div>
                     
                     <div class="detalhe-item">
-                        <span class="detalhe-label">Serviço:</span>
-                        <span class="detalhe-valor">Serviço #<%= agendamento.getServicoId() %></span>
+                        <span class="detalhe-label">ServiÃ§o:</span>
+                        <span class="detalhe-valor">ServiÃ§o #<%= agendamento.getServicoId() %></span>
                     </div>
                     
                     <div class="detalhe-item">
@@ -185,10 +185,10 @@
                     </div>
                     
                     <div class="detalhe-item">
-                        <span class="detalhe-label">Data e Horário:</span>
+                        <span class="detalhe-label">Data e HorÃ¡rio:</span>
                         <span class="detalhe-valor">
                             <%= agendamento.getDataHora() != null ? 
-                                agendamento.getDataHora().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm")) : 
+                                agendamento.getDataHora().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy 'Ã s' HH:mm")) : 
                                 "N/A" %>
                         </span>
                     </div>
@@ -203,11 +203,11 @@
             <% } %>
 
             <div class="info-adicional">
-                <p><strong>Próximos passos:</strong></p>
+                <p><strong>PrÃ³ximos passos:</strong></p>
                 <ul style="text-align: left; margin: 10px 0;">
-                    <li>O prestador será notificado sobre seu agendamento</li>
-                    <li>Você receberá uma confirmação por email quando o agendamento for aprovado</li>
-                    <li>Você pode acompanhar o status do agendamento no seu dashboard</li>
+                    <li>O prestador serÃ¡ notificado sobre seu agendamento</li>
+                    <li>VocÃª receberÃ¡ uma confirmaÃ§Ã£o por email quando o agendamento for aprovado</li>
+                    <li>VocÃª pode acompanhar o status do agendamento no seu dashboard</li>
                 </ul>
             </div>
 

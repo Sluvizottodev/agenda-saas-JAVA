@@ -17,6 +17,9 @@ tomcat-server/work/
 tomcat-server/temp/
 tomcat-server/webapps/agenda-saas/
 tomcat-server/webapps/agenda-saas.war
+tomcat-server/webapps/ROOT/
+tomcat-server/webapps/*.war
+tomcat-server/webapps/*/
 
 # IDE
 .idea/

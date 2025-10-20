@@ -52,7 +52,7 @@
             document.getElementById("campos-prestador").style.display = (tipo === "prestador") ? "block" : "none";
         }
 
-        // Executa ao carregar a página (para manter campos visíveis após reload, se necessário)
+        // Executa ao carregar a pÃ¡gina (para manter campos visÃ­veis apÃ³s reload, se necessÃ¡rio)
         window.addEventListener("DOMContentLoaded", toggleCampos);
     </script>
 </head>
@@ -66,7 +66,7 @@
     <div class="form-container">
         <form action="${pageContext.request.contextPath}/auth/cadastro" method="post">
             <div class="form-group">
-                <label for="tipo">Tipo de Usuário</label>
+                <label for="tipo">Tipo de UsuÃ¡rio</label>
                 <select id="tipo" name="tipo" onchange="toggleCampos()" required>
                     <option value="">Selecione...</option>
                     <option value="cliente">Cliente</option>
@@ -89,7 +89,7 @@
                 <input type="password" id="senha" name="senha" required>
             </div>
 
-            <!-- Campos específicos do CLIENTE -->
+            <!-- Campos especÃ­ficos do CLIENTE -->
             <div id="campos-cliente" class="hidden">
                 <div class="form-group">
                     <label for="cpf">CPF</label>
@@ -97,14 +97,14 @@
                 </div>
             </div>
 
-            <!-- Campos específicos do PRESTADOR -->
+            <!-- Campos especÃ­ficos do PRESTADOR -->
             <div id="campos-prestador" class="hidden">
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
                     <input type="text" id="telefone" name="telefone">
                 </div>
                 <div class="form-group">
-                    <label for="especializacao">Especialização</label>
+                    <label for="especializacao">EspecializaÃ§Ã£o</label>
                     <input type="text" id="especializacao" name="especializacao">
                 </div>
                 <div class="form-group">
@@ -119,8 +119,8 @@
         </form>
         
         <p style="text-align:center; margin-top:15px;">
-            Já tem conta? <a href="login.jsp">Fazer Login</a><br>
-            <a href="../index.jsp" style="font-size: 0.9em; color: #666;">← Voltar à página inicial</a>
+            JÃ¡ tem conta? <a href="login.jsp">Fazer Login</a><br>
+            <a href="../index.jsp" style="font-size: 0.9em; color: #666;">â† Voltar Ã  pÃ¡gina inicial</a>
         </p>
     </div>
 </main>
@@ -130,3 +130,4 @@
 </footer>
 </body>
 </html>
+
