@@ -56,7 +56,7 @@ public class Servico extends Entidade {
 
     public void setNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome nÃ£o pode ser nulo ou vazio");
+            throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
         }
         this.nome = nome.trim();
     }
@@ -67,7 +67,7 @@ public class Servico extends Entidade {
 
     public void setDescricao(String descricao) {
         if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("DescriÃ§Ã£o nÃ£o pode ser nula ou vazia");
+            throw new IllegalArgumentException("Descrição não pode ser nula ou vazia");
         }
         this.descricao = descricao.trim();
     }
@@ -78,7 +78,7 @@ public class Servico extends Entidade {
 
     public void setPreco(double preco) {
         if (preco < 0) {
-            throw new IllegalArgumentException("PreÃ§o nÃ£o pode ser negativo");
+            throw new IllegalArgumentException("Preço não pode ser negativo");
         }
         this.preco = preco;
     }

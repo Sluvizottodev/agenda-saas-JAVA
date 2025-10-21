@@ -6,5 +6,14 @@
          version="5.0">
          
   <display-name>AgendaSaaS Web Application</display-name>
-  
+  <filter>
+    <filter-name>ErrorHandlingFilter</filter-name>
+    <filter-class>br.cefet.agendasaas.filter.ErrorHandlingFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>ErrorHandlingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 </web-app>

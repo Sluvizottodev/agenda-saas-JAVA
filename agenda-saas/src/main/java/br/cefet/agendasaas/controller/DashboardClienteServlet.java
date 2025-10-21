@@ -26,7 +26,6 @@ public class DashboardClienteServlet extends GenericServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ObtÃ©m o cliente logado
         Cliente cliente = (Cliente) request.getSession().getAttribute("usuarioLogado");
         if (cliente == null) {
             response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
@@ -34,7 +33,7 @@ public class DashboardClienteServlet extends GenericServlet {
         }
 
         List<Agendamento> agendamentos = agendamentoDAO.listarPorCliente(cliente.getId());
-        List<Servico> servicos = servicoDAO.listarTodos(); // Mostra todos os serviÃ§os disponÃ­veis
+        List<Servico> servicos = servicoDAO.listarTodos();
 
         request.setAttribute("cliente", cliente);
         request.setAttribute("agendamentos", agendamentos);

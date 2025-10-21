@@ -65,8 +65,66 @@ header {
 }
 
 h1, h2, h3 {
-    color: var(--cor-fundo);
+    color: var(--cor-primaria);
+    margin: 0 0 12px 0;
+    font-weight: 700;
 }
+
+/* Containers e layout */
+.container { max-width:1100px; margin:0 auto; padding:0 16px; }
+main { max-width:1200px; margin:24px auto; padding:20px; }
+
+/* Botões e variações */
+.btn { background-color: var(--cor-secundaria); color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; display:inline-block; font-weight:600; }
+.btn:hover { background-color: var(--cor-botao-hover); }
+.btn-lg { padding:12px 24px; font-size:1.05rem; }
+.btn-secondary { background:#6c757d; }
+.btn-cancelar { background:#f5f5f5; color:#333; border:1px solid #e0e0e0; }
+
+/* Forms */
+.form-group { margin-bottom:14px; text-align:left; }
+.form-group label { display:block; margin-bottom:6px; font-weight:600; }
+.form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"], .form-group input[type="date"], .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:8px; box-sizing:border-box; }
+.form-row { display:flex; gap:16px; align-items:flex-start; }
+.form-row .form-group { flex:1; }
+
+/* Alerts */
+.alert { padding:12px 16px; border-radius:8px; margin-bottom:12px; }
+.alert-success { background:#e6ffed; border:1px solid #bfecc6; color:#1e7a3a; }
+.alert-error { background:#ffecec; border:1px solid #f0b5b5; color:#8a1f1f; }
+.alert-info { background:#eef6ff; border:1px solid #cfe7ff; color:#0a558a; }
+
+/* Service cards */
+.servico-card { border-radius:8px; padding:12px; border:1px solid #ececec; display:flex; gap:12px; align-items:center; cursor:pointer; margin-bottom:10px; }
+.servico-card.selected { border-color: var(--cor-secundaria); box-shadow: 0 6px 16px rgba(123,97,255,0.08); }
+.servico-nome { font-weight:700; color:var(--cor-primaria); }
+.servico-info { display:flex; gap:12px; align-items:center; justify-content:space-between; width:100%; }
+.servico-preco { font-weight:700; color:var(--cor-primaria); }
+
+/* Status badges */
+.status-badge { padding:6px 12px; border-radius:20px; font-weight:700; font-size:0.85rem; }
+.status-disponivel { background:#d4edda; color:#155724; }
+.status-ocupado { background:#f8d7da; color:#721c24; }
+
+/* Sucesso */
+.sucesso-container { max-width:800px; margin:24px auto; background:#fff; padding:28px; border-radius:10px; text-align:center; }
+.sucesso-icon { font-size:3rem; color:#28a745; margin-bottom:6px; }
+.detalhe-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; }
+.detalhe-label { color:#666; font-weight:600; }
+.detalhe-valor { color:#222; }
+
+/* Tables */
+table { width:100%; border-collapse:collapse; }
+table th, table td { padding:12px; border-bottom:1px solid #eee; text-align:left; }
+table th { background:#f7f7fb; color:var(--cor-primaria); font-weight:700; }
+
+@media (max-width:768px) { .form-row { flex-direction:column; } .servico-info { flex-direction:column; align-items:flex-start; } main { padding:12px; } }
+
+/* Header bar layout class used by header.jsp */
+.header-bar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.header-bar .btn { margin-left:8px; }
+
+.header-subtitle { font-size:0.9rem; color:#e6e6e6; }
 
 a {
     color: var(--cor-destaque);

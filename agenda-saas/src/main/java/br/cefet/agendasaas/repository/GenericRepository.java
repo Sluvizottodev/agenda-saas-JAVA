@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-// contrato genÃ©rico para repositÃ³rios
+// contrato genérico para repositórios
 
 public interface GenericRepository<T, ID extends Serializable> {
 

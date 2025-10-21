@@ -28,7 +28,7 @@ public class CadastroServlet extends GenericServlet {
             cliente.setSenha(senha);
             cliente.setCpf(cpf);
 
-            System.out.println("Cliente cadastrado: " + cliente.getNome());
+            // TODO: persistir cliente usando DAO
 
         } else if ("prestador".equalsIgnoreCase(tipoUsuario)) {
             String telefone = request.getParameter("telefone");
@@ -43,10 +43,10 @@ public class CadastroServlet extends GenericServlet {
             prestador.setEspecializacao(especializacao);
             prestador.setCnpj(cnpj);
             
-            System.out.println("Prestador cadastrado: " + prestador.getNome());
+            // TODO: persistir prestador usando DAO
 
         } else {
-            request.setAttribute("erro", "Tipo de usuÃ¡rio invÃ¡lido.");
+                request.setAttribute("erro", "Tipo de usuário inválido.");
             request.getRequestDispatcher("cadastro.jsp").forward(request, response);
             return;
         }

@@ -170,11 +170,13 @@ public class UsuarioDAO {
             case ADMIN:
                 // Para admin, vamos criar um Cliente por padrÃ£o por enquanto
                 // ou vocÃª pode criar uma classe Admin separada
-                Cliente admin = new Cliente();
-                admin.setTipo(TipoUsuario.ADMIN);
+                    // Para admin, vamos criar um Cliente por padrão por enquanto
+                    // ou você pode criar uma classe Admin separada
+                    throw new IllegalArgumentException("Tipo de usuário inválido: " + tipo);
                 return admin;
             default:
                 throw new IllegalArgumentException("Tipo de usuÃ¡rio invÃ¡lido: " + tipo);
+                    throw new IllegalArgumentException("Tipo de usuário inválido: " + tipo);
         }
     }
 }

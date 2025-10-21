@@ -24,19 +24,18 @@ public class ClienteServlet extends GenericServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=UTF-8");
 
-        // LÃª os parÃ¢metros enviados pelo formulÃ¡rio
-        String nome = req.getParameter("nome");
-        String email = req.getParameter("email");
-        String senha = req.getParameter("senha");
-        String cpf   = req.getParameter("cpf");
+    String nome = req.getParameter("nome");
+    String email = req.getParameter("email");
+    String senha = req.getParameter("senha");
+    String cpf   = req.getParameter("cpf");
 
         try (PrintWriter out = resp.getWriter()) {
 
-            // ValidaÃ§Ã£o simples (pode ser melhorada)
+            // Validação básica
             if (nome == null || email == null || senha == null || cpf == null ||
                 nome.trim().isEmpty() || email.trim().isEmpty() || senha.trim().isEmpty() || cpf.trim().isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                out.println("<h3>Erro: Todos os campos sÃ£o obrigatÃ³rios!</h3>");
+                    out.println("<h3>Erro: Todos os campos são obrigatórios!</h3>");
                 return;
             }
 

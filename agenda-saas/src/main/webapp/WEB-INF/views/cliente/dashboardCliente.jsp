@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="pageTitle" value="Dashboard - Cliente | AgendaSaaS" />
 <c:set var="pageRole" value="Cliente" />
-<c:set var="pageCss" value=".cards{gap:16px;} table th, table td{font-size:0.95rem;}" />
 <jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
     <h2>Seus Agendamentos</h2>
@@ -47,7 +46,7 @@
                             <td>${servico.prestador.nome}</td>
                             <td>${servico.nome}</td>
                             <td>R$ ${servico.preco}</td>
-                            <td><a href="agendamento.jsp?servicoId=${servico.id}" class="btn">Agendar</a></td>
+                            <td><a href="${pageContext.request.contextPath}/agendar?servicoId=${servico.id}" class="btn">Agendar</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -56,4 +55,5 @@
     </div>
 
 <jsp:include page="/WEB-INF/views/includes/footer.jsp" />
+
 

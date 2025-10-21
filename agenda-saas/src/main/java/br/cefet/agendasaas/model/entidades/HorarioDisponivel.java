@@ -60,7 +60,7 @@ public class HorarioDisponivel extends Entidade {
 
     public void setData(LocalDate data) {
         if (data == null) {
-            throw new IllegalArgumentException("Data nÃ£o pode ser nula");
+            throw new IllegalArgumentException("Data não pode ser nula");
         }
         this.data = data;
     }
@@ -71,7 +71,7 @@ public class HorarioDisponivel extends Entidade {
 
     public void setHoraInicio(LocalTime horaInicio) {
         if (horaInicio == null) {
-            throw new IllegalArgumentException("Hora de inÃ­cio nÃ£o pode ser nula");
+            throw new IllegalArgumentException("Hora de início não pode ser nula");
         }
         this.horaInicio = horaInicio;
     }
@@ -82,10 +82,10 @@ public class HorarioDisponivel extends Entidade {
 
     public void setHoraFim(LocalTime horaFim) {
         if (horaFim == null) {
-            throw new IllegalArgumentException("Hora de fim nÃ£o pode ser nula");
+            throw new IllegalArgumentException("Hora de fim não pode ser nula");
         }
         if (this.horaInicio != null && horaFim.isBefore(this.horaInicio)) {
-            throw new IllegalArgumentException("Hora de fim deve ser posterior Ã  hora de inÃ­cio");
+            throw new IllegalArgumentException("Hora de fim deve ser posterior à hora de início");
         }
         this.horaFim = horaFim;
     }

@@ -43,10 +43,10 @@ public class AgendamentoServlet extends GenericServlet {
         String action = request.getServletPath();
 
         try {
-            if ("/agendar".equals(action)) {
+                if ("/agendar".equals(action)) {
                 List<Servico> servicosDisponiveis = servicoDAO.listarTodos();
                 request.setAttribute("servicosDisponiveis", servicosDisponiveis);
-                request.getRequestDispatcher("/agendar.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/agendar.jsp").forward(request, response);
 
             } else if ("/agendamentos".equals(action)) {
                 List<Agendamento> agendamentos;
@@ -62,8 +62,8 @@ public class AgendamentoServlet extends GenericServlet {
             }
 
         } catch (Exception e) {
-            request.setAttribute("erro", "Erro ao processar solicitaÃ§Ã£o: " + e.getMessage());
-            request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
+            // Delegar ao handler centralizado para logging e renderização adequada
+            handleException(request, response, e);
         }
     }
 
@@ -94,7 +94,7 @@ public class AgendamentoServlet extends GenericServlet {
             String observacoes = request.getParameter("observacoes");
 
             if (servicoIdParam == null || dataParam == null || horaParam == null) {
-                throw new IllegalArgumentException("Todos os campos obrigatÃ³rios devem ser preenchidos.");
+                throw new IllegalArgumentException("Todos os campos obrigatórios devem ser preenchidos.");
             }
 
             int servicoId = Integer.parseInt(servicoIdParam);
@@ -103,12 +103,12 @@ public class AgendamentoServlet extends GenericServlet {
             LocalDateTime dataHora = LocalDateTime.of(data, hora);
 
             if (dataHora.isBefore(LocalDateTime.now())) {
-                throw new IllegalArgumentException("A data e horÃ¡rio devem ser futuros.");
+                throw new IllegalArgumentException("A data e horário devem ser futuros.");
             }
 
             Servico servico = servicoDAO.buscarPorId(servicoId);
             if (servico == null) {
-                throw new IllegalArgumentException("ServiÃ§o nÃ£o encontrado.");
+                throw new IllegalArgumentException("Serviço não encontrado.");
             }
 
             Agendamento agendamento = new Agendamento();
@@ -130,26 +130,26 @@ public class AgendamentoServlet extends GenericServlet {
                         prestador = null;
                     }
 
-                    Cliente clienteObj = (Cliente) usuario; // jÃ¡ Ã© cliente
+                    Cliente clienteObj = (Cliente) usuario; // já é cliente
                     EmailUtils.notifyAgendamentoAsync(agendamento, servico, prestador, clienteObj);
                 } catch (Throwable t) {
-                    System.err.println("Falha ao disparar notificaÃ§Ãµes por e-mail: " + t.getMessage());
+                    System.err.println("Falha ao disparar notificações por e-mail: " + t.getMessage());
                 }
 
-                request.setAttribute("mensagem",
-                        "Agendamento realizado com sucesso! Seu agendamento estÃ¡ pendente de confirmaÃ§Ã£o.");
-                request.setAttribute("agendamento", agendamento);
-                request.getRequestDispatcher("/agendamento-sucesso.jsp").forward(request, response);
+        request.setAttribute("mensagem",
+            "Agendamento realizado com sucesso! Seu agendamento está pendente de confirmação.");
+        request.setAttribute("agendamento", agendamento);
+        request.getRequestDispatcher("/WEB-INF/views/agendamento-sucesso.jsp").forward(request, response);
             } else {
                 throw new RuntimeException("Erro ao salvar o agendamento no banco de dados.");
             }
 
         } catch (NumberFormatException e) {
-            request.setAttribute("erro", "Dados invÃ¡lidos fornecidos.");
+            request.setAttribute("erro", "Dados inválidos fornecidos.");
             carregarFormularioAgendamento(request, response);
 
         } catch (DateTimeParseException e) {
-            request.setAttribute("erro", "Data ou horÃ¡rio invÃ¡lido.");
+            request.setAttribute("erro", "Data ou horário inválido.");
             carregarFormularioAgendamento(request, response);
 
         } catch (IllegalArgumentException e) {
@@ -157,8 +157,7 @@ public class AgendamentoServlet extends GenericServlet {
             carregarFormularioAgendamento(request, response);
 
         } catch (Exception e) {
-            request.setAttribute("erro", "Erro interno do servidor: " + e.getMessage());
-            request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
+            handleException(request, response, e);
         }
     }
 
@@ -167,10 +166,9 @@ public class AgendamentoServlet extends GenericServlet {
         try {
             List<Servico> servicosDisponiveis = servicoDAO.listarTodos();
             request.setAttribute("servicosDisponiveis", servicosDisponiveis);
-            request.getRequestDispatcher("/agendar.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/agendar.jsp").forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("erro", "Erro ao carregar formulÃ¡rio: " + e.getMessage());
-            request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
+            handleException(request, response, e);
         }
     }
 }
