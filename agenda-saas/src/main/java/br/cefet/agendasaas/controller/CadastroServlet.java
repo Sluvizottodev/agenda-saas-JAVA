@@ -21,7 +21,7 @@ public class CadastroServlet extends GenericServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String tipoUsuario = request.getParameter("tipo"); // "cliente" ou "prestador"
+        String tipoUsuario = request.getParameter("tipo");
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
@@ -57,7 +57,6 @@ public class CadastroServlet extends GenericServlet {
             prestador.setEspecializacao(especializacao);
             prestador.setCnpj(cnpj);
 
-            // Inserir manualmente prestador (usuario + prestador)
             String sqlUsuario = "INSERT INTO usuario (nome, email, senha, tipo) VALUES (?, ?, ?, ?)";
             String sqlPrestador = "INSERT INTO prestador (id, telefone, especializacao, cnpj) VALUES (?, ?, ?, ?)";
 

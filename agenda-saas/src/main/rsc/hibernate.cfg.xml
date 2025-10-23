@@ -1,3 +1,4 @@
+-- Active: 1758847847739@@localhost@3306
 <!DOCTYPE hibernate-configuration PUBLIC 
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
@@ -6,17 +7,14 @@
         <session-factory>
         <!-- Conexão com o banco -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3307/aula202502?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/aula202502?useSSL=false&amp;serverTimezone=UTC</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
 
-        <!-- Dialeto SQL -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
-        <!-- Criar/atualizar tabelas automaticamente -->
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- Mostrar SQL no console -->
         <property name="hibernate.show_sql">true</property>
 
     <!-- Entidade mapeada -->
