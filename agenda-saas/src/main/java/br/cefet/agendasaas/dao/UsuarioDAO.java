@@ -3,11 +3,10 @@ package br.cefet.agendasaas.dao;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-
 import br.cefet.agendasaas.model.entidades.Usuario;
 import br.cefet.agendasaas.utils.JPAUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 public class UsuarioDAO {
 
@@ -57,7 +56,8 @@ public class UsuarioDAO {
     public Usuario buscarPorEmailSenha(String email, String senha) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Usuario> q = em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email AND u.senha = :senha", Usuario.class);
+            TypedQuery<Usuario> q = em
+                    .createQuery("SELECT u FROM Usuario u WHERE u.email = :email AND u.senha = :senha", Usuario.class);
             q.setParameter("email", email);
             q.setParameter("senha", senha);
             List<Usuario> list = q.getResultList();
@@ -68,4 +68,3 @@ public class UsuarioDAO {
     }
 
 }
-

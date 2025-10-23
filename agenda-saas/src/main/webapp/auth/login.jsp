@@ -1,16 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - AgendaSaaS</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<header>
-    <h1>AgendaSaaS</h1>
-    <p>Entre para acessar sua conta</p>
-</header>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<c:set var="pageTitle" value="Login - AgendaSaaS" />
+<c:set var="pageRole" value="Auth" />
+<c:set var="pageCss" value=".form-container{max-width:420px;margin:40px auto;padding:20px;background:#fff;border-radius:8px;box-shadow:var(--sombra-padrao);} .form-actions{display:flex;justify-content:center;}" />
+
+<jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
 <main>
     <div class="card form-container">
@@ -42,16 +37,13 @@
             </div>
         </form>
 
+
         <p class="muted" style="text-align:center; margin-top:12px;">
             Ainda não tem conta? <a href="cadastro.jsp">Cadastre-se</a>
         </p>
-        <p style="text-align:center; margin-top:6px;"><a href="../index.jsp" class="muted">← Voltar à página inicial</a></p>
+        <p style="text-align:center; margin-top:6px;"><a href="${pageContext.request.contextPath}/" class="muted">← Voltar à página inicial</a></p>
     </div>
 </main>
 
-<footer>
-    &copy; 2025 AgendaSaaS.
-</footer>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/includes/footer.jsp" />
 

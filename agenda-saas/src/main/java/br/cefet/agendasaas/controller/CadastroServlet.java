@@ -103,7 +103,7 @@ public class CadastroServlet extends GenericServlet {
             System.out.println("Prestador cadastrado: " + prestador.getNome());
 
         } else {
-            request.setAttribute("erro", "Tipo de usuÃ¡rio invÃ¡lido.");
+            request.setAttribute("erro", "Tipo de usuário inválido.");
             request.getRequestDispatcher("cadastro.jsp").forward(request, response);
             return;
         }

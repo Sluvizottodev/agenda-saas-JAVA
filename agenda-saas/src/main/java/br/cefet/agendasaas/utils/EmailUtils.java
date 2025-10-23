@@ -3,7 +3,7 @@ package br.cefet.agendasaas.utils;
 /**
  * EmailUtils simplificado: implementa no-op para envio de e-mail durante o
  * desenvolvimento
- * (evita adicionar dependÃªncia de Jakarta Mail ao build). Quando necessÃ¡rio,
+ * (evita adicionar dependência de Jakarta Mail ao build). Quando necessário,
  * reimplemente com
  * uma biblioteca de envio de e-mail e atualize o pom.xml.
  */

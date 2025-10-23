@@ -16,43 +16,37 @@ public class HorarioService {
         this.horarioDAO = new HorarioDisponivelDAO();
     }
 
-    /**
-     * Cadastra um novo horÃ¡rio disponÃ­vel
-     */
     public boolean cadastrarHorario(HorarioDisponivel horario) {
         try {
-            // ValidaÃ§Ãµes de negÃ³cio
             if (horario.getData().isBefore(LocalDate.now())) {
-                throw new IllegalArgumentException("NÃ£o Ã© possÃ­vel cadastrar horÃ¡rios no passado");
+                throw new IllegalArgumentException("Não é possível cadastrar horários no passado");
             }
 
             if (horario.getHoraInicio().isAfter(horario.getHoraFim())) {
-                throw new IllegalArgumentException("Hora de inÃ­cio deve ser anterior Ã  hora de fim");
+                throw new IllegalArgumentException("Hora de início deve ser anterior à hora de fim");
             }
-
-            // Verifica se jÃ¡ existe conflito de horÃ¡rio
             if (horarioDAO.verificarConflito(horario.getPrestadorId(), horario.getData(),
                     horario.getHoraInicio(), horario.getHoraFim())) {
-                throw new IllegalArgumentException("JÃ¡ existe um horÃ¡rio conflitante cadastrado");
+                throw new IllegalArgumentException("Já existe um horário conflitante cadastrado");
             }
 
             return horarioDAO.inserir(horario);
 
         } catch (Exception e) {
-            System.err.println("Erro ao cadastrar horÃ¡rio: " + e.getMessage());
+            System.err.println("Erro ao cadastrar horário: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Busca horÃ¡rios disponÃ­veis de um prestador
+     * Busca horários disponíveis de um prestador
      */
     public List<HorarioDisponivel> buscarHorariosDisponiveisPorPrestador(int prestadorId) {
         return horarioDAO.listarDisponiveisPorPrestador(prestadorId);
     }
 
     /**
-     * Busca horÃ¡rios de um prestador em uma data especÃ­fica
+     * Busca horários de um prestador em uma data específica
      */
     public List<HorarioDisponivel> buscarHorariosPorPrestadorEData(int prestadorId, LocalDate data) {
         return horarioDAO.listarPorPrestadorEData(prestadorId, data);
@@ -92,7 +86,7 @@ public class HorarioService {
             return horarioDAO.marcarComoIndisponivel(horarioId);
 
         } catch (Exception e) {
-            System.err.println("Erro ao reservar horÃ¡rio: " + e.getMessage());
+            System.err.println("Erro ao reservar horário: " + e.getMessage());
             return false;
         }
     }
@@ -111,19 +105,19 @@ public class HorarioService {
             return horarioDAO.marcarComoDisponivel(horarioId);
 
         } catch (Exception e) {
-            System.err.println("Erro ao liberar horÃ¡rio: " + e.getMessage());
+            System.err.println("Erro ao liberar horário: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Atualiza um horÃ¡rio disponÃ­vel
+     * Atualiza um horário disponível
      */
     public boolean atualizarHorario(HorarioDisponivel horario) {
         try {
             // ValidaÃ§Ãµes de negÃ³cio
             if (horario.getId() <= 0) {
-                throw new IllegalArgumentException("ID do horÃ¡rio Ã© obrigatÃ³rio para atualizaÃ§Ã£o");
+                throw new IllegalArgumentException("ID do horário é obrigatório para atualização");
             }
 
             HorarioDisponivel horarioExistente = horarioDAO.buscarPorId(horario.getId());
@@ -138,13 +132,13 @@ public class HorarioService {
             return horarioDAO.atualizar(horario);
 
         } catch (Exception e) {
-            System.err.println("Erro ao atualizar horÃ¡rio: " + e.getMessage());
+            System.err.println("Erro ao atualizar horário: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Remove um horÃ¡rio
+     * Remove um horário
      */
     public boolean removerHorario(int horarioId) {
         try {
@@ -157,13 +151,13 @@ public class HorarioService {
             return horarioDAO.remover(horarioId);
 
         } catch (Exception e) {
-            System.err.println("Erro ao remover horÃ¡rio: " + e.getMessage());
+            System.err.println("Erro ao remover horário: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Gera horÃ¡rios automÃ¡ticos para um prestador
+     * Gera horários automáticos para um prestador
      */
     public boolean gerarHorariosAutomaticos(int prestadorId, LocalDate dataInicio, LocalDate dataFim,
             LocalTime horaInicioTrabalho, LocalTime horaFimTrabalho,
@@ -171,15 +165,15 @@ public class HorarioService {
         try {
             // ValidaÃ§Ãµes
             if (dataInicio.isBefore(LocalDate.now())) {
-                throw new IllegalArgumentException("Data de inÃ­cio nÃ£o pode ser no passado");
+                throw new IllegalArgumentException("Data de início não pode ser no passado");
             }
 
             if (dataFim.isBefore(dataInicio)) {
-                throw new IllegalArgumentException("Data de fim deve ser posterior Ã  data de inÃ­cio");
+                throw new IllegalArgumentException("Data de fim deve ser posterior à data de início");
             }
 
             if (horaInicioTrabalho.isAfter(horaFimTrabalho)) {
-                throw new IllegalArgumentException("Hora de inÃ­cio do trabalho deve ser anterior Ã  hora de fim");
+                throw new IllegalArgumentException("Hora de início do trabalho deve ser anterior à hora de fim");
             }
 
             if (intervalosMinutos <= 0 || intervalosMinutos > 240) {
@@ -191,20 +185,20 @@ public class HorarioService {
                     intervalosMinutos);
 
         } catch (Exception e) {
-            System.err.println("Erro ao gerar horÃ¡rios automÃ¡ticos: " + e.getMessage());
+            System.err.println("Erro ao gerar horários automáticos: " + e.getMessage());
             return false;
         }
     }
 
     /**
-     * Lista horÃ¡rios em um perÃ­odo especÃ­fico
+     * Lista horários em um período específico
      */
     public List<HorarioDisponivel> listarHorariosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
         return horarioDAO.listarPorPeriodo(dataInicio, dataFim);
     }
 
     /**
-     * Verifica se um horÃ¡rio estÃ¡ disponÃ­vel
+     * Verifica se um horário está disponível
      */
     public boolean isHorarioDisponivel(int prestadorId, LocalDate data, LocalTime hora) {
         List<HorarioDisponivel> horarios = horarioDAO.listarPorPrestadorEData(prestadorId, data);

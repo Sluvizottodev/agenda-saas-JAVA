@@ -11,9 +11,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Optional;
 
-
-// utilitarios para manipulaÃ§Ã£o de datas e horas.
-
 public final class DataUtil {
 
 	private DataUtil() { }

@@ -58,8 +58,7 @@ public class HorarioServlet extends GenericServlet {
                     break;
             }
         } catch (Exception e) {
-            request.setAttribute("erro", "Erro ao processar solicitaÃ§Ã£o: " + e.getMessage());
-            request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
+            handleException(request, response, e);
         }
     }
 
@@ -95,7 +94,7 @@ public class HorarioServlet extends GenericServlet {
                     break;
             }
         } catch (Exception e) {
-            request.setAttribute("erro", "Erro ao processar solicitaÃ§Ã£o: " + e.getMessage());
+            request.setAttribute("erro", "Erro ao processar solicitação: " + e.getMessage());
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
         }
     }
@@ -108,7 +107,7 @@ public class HorarioServlet extends GenericServlet {
             request.setAttribute("horarios", horarios);
             request.getRequestDispatcher("/WEB-INF/views/horarios/listar.jsp").forward(request, response);
         } else {
-            request.setAttribute("erro", "Apenas prestadores podem gerenciar horÃ¡rios.");
+                request.setAttribute("erro", "Apenas prestadores podem gerenciar horários.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
         }
     }
@@ -117,7 +116,7 @@ public class HorarioServlet extends GenericServlet {
             throws ServletException, IOException {
 
         if (!(usuario instanceof Prestador)) {
-            request.setAttribute("erro", "Apenas prestadores podem cadastrar horÃ¡rios.");
+            request.setAttribute("erro", "Apenas prestadores podem cadastrar horários.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
@@ -129,14 +128,14 @@ public class HorarioServlet extends GenericServlet {
             throws ServletException, IOException {
 
         if (!(usuario instanceof Prestador)) {
-            request.setAttribute("erro", "Apenas prestadores podem editar horÃ¡rios.");
+            request.setAttribute("erro", "Apenas prestadores podem editar horários.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
 
         String idParam = request.getParameter("id");
-        if (idParam == null || idParam.trim().isEmpty()) {
-            request.setAttribute("erro", "ID do horÃ¡rio Ã© obrigatÃ³rio.");
+            if (idParam == null || idParam.trim().isEmpty()) {
+            request.setAttribute("erro", "ID do horário é obrigatório.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
@@ -146,13 +145,13 @@ public class HorarioServlet extends GenericServlet {
             HorarioDisponivel horario = horarioService.buscarPorId(id);
 
             if (horario == null) {
-                request.setAttribute("erro", "HorÃ¡rio nÃ£o encontrado.");
+                request.setAttribute("erro", "Horário não encontrado.");
                 request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
                 return;
             }
 
             if (horario.getPrestadorId() != usuario.getId()) {
-                request.setAttribute("erro", "VocÃª nÃ£o tem permissÃ£o para editar este horÃ¡rio.");
+                request.setAttribute("erro", "Você não tem permissão para editar este horário.");
                 request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
                 return;
             }
@@ -161,7 +160,7 @@ public class HorarioServlet extends GenericServlet {
             request.getRequestDispatcher("/WEB-INF/views/horarios/editar.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
-            request.setAttribute("erro", "ID do horÃ¡rio invÃ¡lido.");
+            request.setAttribute("erro", "ID do horário inválido.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
         }
     }
@@ -170,14 +169,14 @@ public class HorarioServlet extends GenericServlet {
             throws ServletException, IOException {
 
         if (!(usuario instanceof Prestador)) {
-            request.setAttribute("erro", "Apenas prestadores podem remover horÃ¡rios.");
+            request.setAttribute("erro", "Apenas prestadores podem remover horários.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
 
         String idParam = request.getParameter("id");
-        if (idParam == null || idParam.trim().isEmpty()) {
-            request.setAttribute("erro", "ID do horÃ¡rio Ã© obrigatÃ³rio.");
+            if (idParam == null || idParam.trim().isEmpty()) {
+            request.setAttribute("erro", "ID do horário é obrigatório.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
@@ -187,13 +186,13 @@ public class HorarioServlet extends GenericServlet {
             HorarioDisponivel horario = horarioService.buscarPorId(id);
 
             if (horario == null) {
-                request.setAttribute("erro", "HorÃ¡rio nÃ£o encontrado.");
+                request.setAttribute("erro", "Horário não encontrado.");
                 request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
                 return;
             }
 
             if (horario.getPrestadorId() != usuario.getId()) {
-                request.setAttribute("erro", "VocÃª nÃ£o tem permissÃ£o para remover este horÃ¡rio.");
+                request.setAttribute("erro", "Você não tem permissão para remover este horário.");
                 request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
                 return;
             }
@@ -201,9 +200,9 @@ public class HorarioServlet extends GenericServlet {
             boolean sucesso = horarioService.removerHorario(id);
 
             if (sucesso) {
-                request.setAttribute("mensagem", "HorÃ¡rio removido com sucesso!");
+                request.setAttribute("mensagem", "Horário removido com sucesso!");
             } else {
-                request.setAttribute("erro", "Erro ao remover horÃ¡rio.");
+                request.setAttribute("erro", "Erro ao remover horário.");
             }
 
             response.sendRedirect(request.getContextPath() + "/horarios");
@@ -219,7 +218,7 @@ public class HorarioServlet extends GenericServlet {
             throws ServletException, IOException {
 
         if (!(usuario instanceof Prestador)) {
-            request.setAttribute("erro", "Apenas prestadores podem gerar horÃ¡rios.");
+            request.setAttribute("erro", "Apenas prestadores podem gerar horários.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
@@ -231,7 +230,7 @@ public class HorarioServlet extends GenericServlet {
             throws ServletException, IOException {
 
         if (!(usuario instanceof Prestador)) {
-            request.setAttribute("erro", "Apenas prestadores podem cadastrar horÃ¡rios.");
+            request.setAttribute("erro", "Apenas prestadores podem cadastrar horários.");
             request.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
             return;
         }
@@ -242,7 +241,7 @@ public class HorarioServlet extends GenericServlet {
             String horaFimParam = request.getParameter("horaFim");
 
             if (dataParam == null || horaInicioParam == null || horaFimParam == null) {
-                throw new IllegalArgumentException("Todos os campos sÃ£o obrigatÃ³rios.");
+                    throw new IllegalArgumentException("Todos os campos são obrigatórios.");
             }
 
             LocalDate data = LocalDate.parse(dataParam);

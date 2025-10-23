@@ -59,9 +59,10 @@ public class LoginServlet extends GenericServlet {
                     break;
             }
         } else {
-            request.setAttribute("erro", "E-mail ou senha invÃ¡lidos!");
+            request.setAttribute("erro", "E-mail ou senha inválidos!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
+        
     }
 }
 

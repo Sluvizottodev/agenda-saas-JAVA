@@ -24,7 +24,6 @@ public class DashboardPrestadorServlet extends GenericServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Aqui vocÃª deve obter o prestador logado. Exemplo:
         Prestador prestador = (Prestador) request.getSession().getAttribute("usuarioLogado");
         if (prestador == null) {
             response.sendRedirect(request.getContextPath() + "/auth/login.jsp");

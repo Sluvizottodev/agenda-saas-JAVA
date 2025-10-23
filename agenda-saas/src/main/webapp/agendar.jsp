@@ -157,15 +157,12 @@
     </style>
     <script>
         function selecionarServico(servicoId, elemento) {
-            // Remove seleÃ§Ã£o anterior
             document.querySelectorAll('.servico-card').forEach(card => {
                 card.classList.remove('selected');
             });
-            
-            // Adiciona seleÃ§Ã£o atual
+
             elemento.classList.add('selected');
             
-            // Marca o radio button
             document.getElementById('servico_' + servicoId).checked = true;
         }
 
@@ -175,7 +172,7 @@
             const hora = document.getElementById('hora').value;
 
             if (!servicoSelecionado) {
-                alert('Por favor, selecione um serviÃ§o.');
+                alert('Por favor, selecione um serviço.');
                 return false;
             }
 
@@ -185,23 +182,21 @@
             }
 
             if (!hora) {
-                alert('Por favor, selecione um horÃ¡rio.');
+                alert('Por favor, selecione um horário.');
                 return false;
             }
 
-            // Validar se a data nÃ£o Ã© no passado
             const dataHora = new Date(data + 'T' + hora);
             const agora = new Date();
 
             if (dataHora <= agora) {
-                alert('A data e horÃ¡rio devem ser futuros.');
+                alert('A data e horário devem ser futuros.');
                 return false;
             }
 
             return true;
         }
 
-        // Definir data mÃ­nima como hoje
         window.addEventListener('DOMContentLoaded', function() {
             const hoje = new Date().toISOString().split('T')[0];
             document.getElementById('data').min = hoje;
@@ -231,7 +226,7 @@
 
     <main>
         <div class="agendamento-container">
-            <h2>Agendar Novo ServiÃ§o</h2>
+            <h2>Agendar Novo Serviço</h2>
 
             <% if (mensagem != null) { %>
                 <div class="alert alert-success">
@@ -247,10 +242,10 @@
 
             <form action="${pageContext.request.contextPath}/agendar" method="post" onsubmit="return validarFormulario()">
                 <div class="form-group">
-                    <label>Selecione o ServiÃ§o:</label>
+                    <label>Selecione o Serviço:</label>
                     <% if (servicosDisponiveis != null && !servicosDisponiveis.isEmpty()) { %>
                         <% for (Servico servico : servicosDisponiveis) { %>
-                            <div class="servico-card" onclick="selecionarServico(<%= servico.getId() %>, this)">
+                            <div class="servico-card" onclick="selecionarServico('<%= servico.getId() %>', this)">
                                 <input type="radio" id="servico_<%= servico.getId() %>" name="servicoId" value="<%= servico.getId() %>" style="display: none;">
                                 <label for="servico_<%= servico.getId() %>" style="cursor: pointer; display: block;">
                                     <div class="servico-nome"><%= servico.getNome() %></div>
@@ -263,7 +258,7 @@
                         <% } %>
                     <% } else { %>
                         <div class="alert alert-info">
-                            <p>Nenhum serviÃ§o disponÃ­vel no momento. Entre em contato conosco para mais informaÃ§Ãµes.</p>
+                            <p>Nenhum serviço disponível no momento. Entre em contato conosco para mais informações.</p>
                         </div>
                     <% } %>
                 </div>
@@ -276,7 +271,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="hora">HorÃ¡rio:</label>
+                            <label for="hora">Horário:</label>
                             <select id="hora" name="hora" required>
                                 <option value="">Selecione um horÃ¡rio</option>
                                 <option value="08:00">08:00</option>
@@ -302,8 +297,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="observacoes">ObservaÃ§Ãµes (opcional):</label>
-                        <textarea id="observacoes" name="observacoes" rows="4" placeholder="Descreva alguma observaÃ§Ã£o especial sobre o agendamento..."></textarea>
+                        <label for="observacoes">Observações (opcional):</label>
+                        <textarea id="observacoes" name="observacoes" rows="4" placeholder="Descreva alguma observação especial sobre o agendamento..."></textarea>
                     </div>
 
                     <div class="btn-group">

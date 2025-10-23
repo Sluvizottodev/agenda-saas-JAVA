@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="pageTitle" value="Dashboard - Prestador | AgendaSaaS" />
 <c:set var="pageRole" value="Prestador" />
-<c:set var="pageCss" value=".card table td{font-weight:500;} .card a.btn{margin-top:12px;}" />
 <jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
     <h2>Seus Serviços</h2>
@@ -26,7 +25,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            <a href="servicoCadastro.jsp" class="btn">Adicionar Novo Serviço</a>
+            <a href="${pageContext.request.contextPath}/servico/cadastrar" class="btn">Adicionar Novo Serviço</a>
         </div>
 
         <div class="card">
