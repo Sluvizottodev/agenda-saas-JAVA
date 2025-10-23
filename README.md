@@ -61,3 +61,45 @@ target/agenda-saas.war
 ```
 http://localhost:8080/agenda-saas
 ```
+
+---
+
+## 🏃‍♂️ Ambiente de Desenvolvimento (automação)
+
+Para facilitar o desenvolvimento local, há um script que automatiza a criação
+de um banco MySQL em container Docker, importa o script de inicialização
+(`init-database.sql`), cria um usuário de aplicação e inicia o servidor Tomcat
+com a aplicação.
+
+Arquivo: `run-dev.bat` (na raiz do projeto)
+
+O que o `run-dev.bat` faz:
+- Verifica se o Docker Desktop/daemon está ativo
+- Remove (se existir) e cria um container MySQL (`agenda-mysql`) com `mysql:8.0`
+- Aguarda o MySQL ficar pronto e importa `init-database.sql`
+- Cria usuário de aplicação `agenda` com permissões no schema `agenda_saas`
+- Define variáveis de ambiente temporárias para a sessão e executa `mvn package`
+- Executa `start-server.bat` para redeploy e aguarda a aplicação responder
+
+Como usar (cmd.exe):
+
+```cmd
+cd /d C:\Users\User\DEV\agenda-saas\agenda-saas
+run-dev.bat
+```
+
+Ao final você verá a URL de acesso: `http://localhost:8080/agenda-saas/index.jsp`
+
+Comandos úteis:
+
+```cmd
+:: Parar e remover o container de desenvolvimento
+docker stop agenda-mysql
+docker rm agenda-mysql
+
+:: Parar Tomcat (se iniciado manualmente)
+tomcat-server\bin\shutdown.bat
+
+:: Limpar build
+mvn clean
+```

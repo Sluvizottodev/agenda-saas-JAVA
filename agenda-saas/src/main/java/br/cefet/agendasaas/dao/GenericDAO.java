@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
-import br.cefet.agendasaas.utils.HibernateUtil;
+import br.cefet.agendasaas.utils.JPAUtil;
 
 public class GenericDAO<T, ID extends Serializable> {
 
@@ -19,118 +19,144 @@ public class GenericDAO<T, ID extends Serializable> {
     }
 
     public Optional<T> findById(ID id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            T entity = session.get(entityClass, id);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            T entity = em.find(entityClass, id);
             return Optional.ofNullable(entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
+        } finally {
+            em.close();
         }
     }
 
     public List<T> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "from " + entityClass.getSimpleName();
-            Query<T> q = session.createQuery(hql, entityClass);
-            return q.list();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String ql = "from " + entityClass.getSimpleName();
+            TypedQuery<T> q = em.createQuery(ql, entityClass);
+            return q.getResultList();
+        } finally {
+            em.close();
         }
     }
 
     public T save(T entity) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.persist(entity);
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.persist(entity);
             tx.commit();
             return entity;
         } catch (RuntimeException e) {
-            if (tx != null) tx.rollback();
+            if (tx.isActive()) tx.rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public T update(T entity) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            T merged = (T) session.merge(entity);
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            T merged = em.merge(entity);
             tx.commit();
             return merged;
         } catch (RuntimeException e) {
-            if (tx != null) tx.rollback();
+            if (tx.isActive()) tx.rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void delete(T entity) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.remove(entity);
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            T merged = em.contains(entity) ? entity : em.merge(entity);
+            em.remove(merged);
             tx.commit();
         } catch (RuntimeException e) {
-            if (tx != null) tx.rollback();
+            if (tx.isActive()) tx.rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public int deleteById(ID id) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            T entity = session.get(entityClass, id);
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            T entity = em.find(entityClass, id);
             if (entity == null) {
                 tx.commit();
                 return 0;
             }
-            session.remove(entity);
+            em.remove(entity);
             tx.commit();
             return 1;
         } catch (RuntimeException e) {
-            if (tx != null) tx.rollback();
+            if (tx.isActive()) tx.rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
-    public List<T> findWithQuery(String hql, Object... params) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<T> q = session.createQuery(hql, entityClass);
+    public List<T> findWithQuery(String ql, Object... params) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<T> q = em.createQuery(ql, entityClass);
             for (int i = 0; i < params.length; i++) {
                 q.setParameter(i + 1, params[i]);
             }
-            return q.list();
+            return q.getResultList();
+        } finally {
+            em.close();
         }
     }
 
-// return paginado
     public List<T> findAll(int page, int size) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "from " + entityClass.getSimpleName();
-            Query<T> q = session.createQuery(hql, entityClass);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String ql = "from " + entityClass.getSimpleName();
+            TypedQuery<T> q = em.createQuery(ql, entityClass);
             q.setFirstResult(page * size);
             q.setMaxResults(size);
-            return q.list();
+            return q.getResultList();
+        } finally {
+            em.close();
         }
     }
 
-// count registros de entyty
     public long count() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String hql = "select count(e) from " + entityClass.getSimpleName() + " e";
-            Query<Long> q = session.createQuery(hql, Long.class);
-            return q.uniqueResultOptional().orElse(0L);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String ql = "select count(e) from " + entityClass.getSimpleName() + " e";
+            TypedQuery<Long> q = em.createQuery(ql, Long.class);
+            return q.getSingleResult();
+        } finally {
+            em.close();
         }
     }
-    
-    public List<T> findWithQuery(String hql, int page, int size, Object... params) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<T> q = session.createQuery(hql, entityClass);
+
+    public List<T> findWithQuery(String ql, int page, int size, Object... params) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<T> q = em.createQuery(ql, entityClass);
             for (int i = 0; i < params.length; i++) {
                 q.setParameter(i + 1, params[i]);
             }
             q.setFirstResult(page * size);
             q.setMaxResults(size);
-            return q.list();
+            return q.getResultList();
+        } finally {
+            em.close();
         }
     }
 

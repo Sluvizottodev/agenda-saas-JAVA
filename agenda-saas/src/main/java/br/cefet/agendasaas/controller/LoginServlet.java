@@ -21,7 +21,27 @@ public class LoginServlet extends GenericServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
-        Usuario usuario = usuarioDAO.buscarPorEmailSenha(email, senha);
+        Usuario usuario = null;
+        try {
+            usuario = usuarioDAO.buscarPorEmailSenha(email, senha);
+        } catch (Exception e) {
+            java.io.File logFile = new java.io.File("" + System.getProperty("user.dir")
+                    + "\\tomcat-server\\logs\\app-error.log");
+            try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(logFile, true))) {
+                pw.println("--- Exception in LoginServlet at " + java.time.LocalDateTime.now() + " ---");
+                e.printStackTrace(pw);
+                pw.println();
+            } catch (java.io.IOException ioe) {
+                // swallow
+            }
+            request.setAttribute("erro", "Erro interno, tente novamente mais tarde.");
+            try {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } catch (ServletException | IOException se) {
+                throw new ServletException(se);
+            }
+            return;
+        }
 
         if (usuario != null) {
             HttpSession session = request.getSession();

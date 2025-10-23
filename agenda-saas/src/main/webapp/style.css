@@ -64,7 +64,7 @@ header {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-h1, h2, h3 {
+h1, h2 {
     color: var(--cor-fundo);
 }
 
@@ -74,4 +74,25 @@ a {
 
 a:hover {
     color: var(--cor-hover);
+}
+
+.form-container { max-width: 420px; margin: 40px auto; text-align: left; padding: 28px; }
+.form-login .form-group { margin-bottom: 14px; }
+.form-login label { display:block; margin-bottom:6px; font-weight:600; }
+.form-login input[type="email"], .form-login input[type="password"], .form-login input[type="text"] {
+    width:100%; padding:10px; border:1px solid #e1e1e1; border-radius:6px; box-sizing:border-box;
+}
+.form-actions { text-align:center; margin-top:18px; }
+.form-row { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.checkbox-inline { font-size:0.95em; }
+.link-right { font-size:0.95em; color:var(--cor-primaria); text-decoration:none; }
+.link-right:hover { text-decoration:underline; }
+
+.alert { padding:10px 12px; border-radius:6px; margin-bottom:12px; }
+.alert-error { background:#ffe5e5; border:1px solid #ffb3b3; color:#7a1515; }
+.muted { color:#666; }
+
+@media (max-width: 480px) {
+    .form-container { padding:18px; margin:20px; }
+    .form-row { flex-direction:column; align-items:flex-start; }
 }
