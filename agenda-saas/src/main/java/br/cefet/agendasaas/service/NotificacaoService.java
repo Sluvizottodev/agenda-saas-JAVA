@@ -1,6 +1,35 @@
 package br.cefet.agendasaas.service;
 
-public class NotificacaoService {
-    
-}
+import java.util.List;
 
+import br.cefet.agendasaas.dao.GenericDAO;
+import br.cefet.agendasaas.model.entidades.Notificacao;
+
+public class NotificacaoService {
+
+    private final GenericDAO<Notificacao, Integer> dao = new GenericDAO<>(Notificacao.class);
+
+    public NotificacaoService() {
+        // construtor padrão
+    }
+
+    public Notificacao criar(Notificacao n) {
+        return dao.save(n);
+    }
+
+    public Notificacao buscarPorId(int id) {
+        return dao.findById(id).orElse(null);
+    }
+
+    public List<Notificacao> listarTodos() {
+        return dao.findAll();
+    }
+
+    public Notificacao atualizar(Notificacao n) {
+        return dao.update(n);
+    }
+
+    public boolean remover(int id) {
+        return dao.deleteById(id) > 0;
+    }
+}
