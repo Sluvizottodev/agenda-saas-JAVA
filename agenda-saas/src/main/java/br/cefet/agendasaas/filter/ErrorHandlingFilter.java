@@ -30,7 +30,7 @@ public class ErrorHandlingFilter implements Filter {
 
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             StringWriter sw = new StringWriter();
             t.printStackTrace(new PrintWriter(sw));
             String stack = sw.toString();
@@ -38,7 +38,16 @@ public class ErrorHandlingFilter implements Filter {
                     "[ErrorHandlingFilter] Exceção capturada em '" + req.getRequestURI() + "': " + t.getMessage());
             System.err.println(stack);
             try {
-                java.io.File out = new java.io.File("c:\\temp\\agenda-error.log");
+                String logsDir = req.getServletContext().getRealPath("/WEB-INF/logs");
+                if (logsDir == null) {
+                    String catalina = System.getProperty("catalina.base");
+                    if (catalina != null) {
+                        logsDir = catalina + java.io.File.separator + "logs";
+                    } else {
+                        logsDir = System.getProperty("java.io.tmpdir");
+                    }
+                }
+                java.io.File out = new java.io.File(logsDir, "agenda-error.log");
                 out.getParentFile().mkdirs();
                 try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(out, true))) {
                     pw.println("--- ErrorHandlingFilter captured exception at " + java.time.LocalDateTime.now()
@@ -47,7 +56,8 @@ public class ErrorHandlingFilter implements Filter {
                     pw.println();
                 }
             } catch (Exception ioe) {
-
+                // erro ao gravar log secundário — ignorar para evitar mascarar a exceção
+                // original
             }
 
             boolean ajax = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
@@ -60,7 +70,6 @@ public class ErrorHandlingFilter implements Filter {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.setContentType("application/json;charset=UTF-8");
                 String safeMessage = t.getMessage() == null ? "Erro interno no servidor" : t.getMessage();
-                // Minimal JSON response (avoid exposing stacktrace in production)
                 String json = "{\"error\": \"" + escapeJson(safeMessage) + "\"}";
                 resp.getWriter().write(json);
             } else {

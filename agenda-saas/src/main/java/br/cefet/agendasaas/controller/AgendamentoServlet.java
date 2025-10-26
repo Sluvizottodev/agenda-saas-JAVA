@@ -43,7 +43,7 @@ public class AgendamentoServlet extends GenericServlet {
         String action = request.getServletPath();
 
         try {
-                if ("/agendar".equals(action)) {
+            if ("/agendar".equals(action)) {
                 List<Servico> servicosDisponiveis = servicoDAO.listarTodos();
                 request.setAttribute("servicosDisponiveis", servicosDisponiveis);
                 request.getRequestDispatcher("/WEB-INF/views/agendar.jsp").forward(request, response);
@@ -131,14 +131,23 @@ public class AgendamentoServlet extends GenericServlet {
 
                     Cliente clienteObj = (Cliente) usuario; // ja eh cliente
                     EmailUtils.notifyAgendamentoAsync(agendamento, servico, prestador, clienteObj);
-                } catch (Throwable t) {
-                    System.err.println("Falha ao disparar notificações por e-mail: " + t.getMessage());
+                } catch (Exception t) {
+                    java.io.File logFile = new java.io.File(
+                            "c:\\Users\\User\\DEV\\agenda-saas\\agenda-saas\\tomcat-server\\logs\\app-error.log");
+                    try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(logFile, true))) {
+                        pw.println("--- Falha ao disparar notificações por e-mail em " + java.time.LocalDateTime.now()
+                                + " ---");
+                        t.printStackTrace(pw);
+                        pw.println();
+                    } catch (java.io.IOException ioe) {
+                        System.err.println("Falha ao logar erro de notificação: " + ioe.getMessage());
+                    }
                 }
 
-        request.setAttribute("mensagem",
-            "Agendamento realizado com sucesso! Seu agendamento está pendente de confirmação.");
-        request.setAttribute("agendamento", agendamento);
-        request.getRequestDispatcher("/WEB-INF/views/agendamento-sucesso.jsp").forward(request, response);
+                request.setAttribute("mensagem",
+                        "Agendamento realizado com sucesso! Seu agendamento está pendente de confirmação.");
+                request.setAttribute("agendamento", agendamento);
+                request.getRequestDispatcher("/WEB-INF/views/agendamento-sucesso.jsp").forward(request, response);
             } else {
                 throw new RuntimeException("Erro ao salvar o agendamento no banco de dados.");
             }
@@ -171,4 +180,3 @@ public class AgendamentoServlet extends GenericServlet {
         }
     }
 }
-

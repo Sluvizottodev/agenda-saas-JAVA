@@ -18,9 +18,9 @@ public class JPAUtil {
                 var entities = metamodel.getEntities();
                 System.out.println("[JPAUtil] Registered entities in metamodel:");
                 entities.stream().map(e -> e.getName()).sorted().forEach(n -> System.out.println(" - " + n));
-            } catch (Throwable t) {
-                System.err.println("[JPAUtil] Erro ao inspecionar o metamodel: " + t.getMessage());
-                t.printStackTrace(System.err);
+            } catch (Exception e) {
+                System.err.println("[JPAUtil] Erro ao inspecionar o metamodel: " + e.getMessage());
+                e.printStackTrace(System.err);
             }
             return factory;
         } catch (RuntimeException ex) {

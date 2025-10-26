@@ -9,7 +9,8 @@ public class HibernateUtil {
     private static SessionFactory buildSessionFactory() {
         try {
             return new Configuration().configure().buildSessionFactory();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
+
             throw new ExceptionInInitializerError("Erro ao criar SessionFactory: " + ex);
         }
     }

@@ -1,12 +1,13 @@
-package br.cefet.agendaSaas.controller;
+/*package br.cefet.agendaSaas.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.ServletException;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/api/postman")
 public class PostmanServlet extends HttpServlet {
@@ -63,3 +64,4 @@ public class PostmanServlet extends HttpServlet {
         out.flush();
     }
 }
+*/
