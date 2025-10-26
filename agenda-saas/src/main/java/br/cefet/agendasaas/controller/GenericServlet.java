@@ -44,17 +44,9 @@ public abstract class GenericServlet extends HttpServlet {
         response.getWriter().write(json);
     }
 
-    /**
-     * Método utilitário para tratamento de exceções em servlets.
-     * Em vez de duplicar a lógica de renderizar páginas de erro em cada servlet,
-     * lançamos uma ServletException para que o filtro global (ErrorHandlingFilter)
-     * capture e centralize o tratamento/resposta.
-     */
     protected void handleException(HttpServletRequest request, HttpServletResponse response, Exception e)
             throws ServletException, IOException {
-        // Anexa uma mensagem curta no request (pode ser utilizada pela página de erro)
         request.setAttribute("erro", "Erro ao processar solicitação: " + e.getMessage());
-        // Re-lança como ServletException para o filtro global interceptar
         throw new ServletException(e);
     }
 
