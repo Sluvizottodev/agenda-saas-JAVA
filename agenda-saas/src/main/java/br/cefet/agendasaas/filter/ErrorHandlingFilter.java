@@ -18,7 +18,7 @@ public class ErrorHandlingFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        
+
     }
 
     @Override
@@ -34,8 +34,21 @@ public class ErrorHandlingFilter implements Filter {
             StringWriter sw = new StringWriter();
             t.printStackTrace(new PrintWriter(sw));
             String stack = sw.toString();
-            System.err.println("[ErrorHandlingFilter] Exceção capturada em '" + req.getRequestURI() + "': " + t.getMessage());
+            System.err.println(
+                    "[ErrorHandlingFilter] Exceção capturada em '" + req.getRequestURI() + "': " + t.getMessage());
             System.err.println(stack);
+            try {
+                java.io.File out = new java.io.File("c:\\temp\\agenda-error.log");
+                out.getParentFile().mkdirs();
+                try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(out, true))) {
+                    pw.println("--- ErrorHandlingFilter captured exception at " + java.time.LocalDateTime.now()
+                            + " for " + req.getRequestURI() + " ---");
+                    pw.println(stack);
+                    pw.println();
+                }
+            } catch (Exception ioe) {
+
+            }
 
             boolean ajax = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
             String accept = req.getHeader("Accept");
@@ -51,13 +64,12 @@ public class ErrorHandlingFilter implements Filter {
                 String json = "{\"error\": \"" + escapeJson(safeMessage) + "\"}";
                 resp.getWriter().write(json);
             } else {
-                // Encaminha para a página de erro com atributos para exibir detalhes
+
                 request.setAttribute("erro", "Ocorreu um erro interno: " + Objects.toString(t.getMessage(), ""));
                 request.setAttribute("detalhes", stack);
                 try {
                     req.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
                 } catch (Exception e) {
-                    // Fallback: enviar texto simples
                     resp.setContentType("text/plain;charset=UTF-8");
                     resp.getWriter().write("Ocorreu um erro interno e a página de erro não pôde ser renderizada.");
                 }
@@ -67,11 +79,12 @@ public class ErrorHandlingFilter implements Filter {
 
     @Override
     public void destroy() {
-        // Nothing to destroy
+
     }
 
     private String escapeJson(String s) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
     }
 }
