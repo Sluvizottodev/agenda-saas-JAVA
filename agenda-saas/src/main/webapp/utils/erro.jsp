@@ -53,6 +53,11 @@
                             <p><strong>Mensagem:</strong> <%= exception.getMessage() %></p>
                         <% } %>
                     <% } %>
+                    <% String detalhes = (String) request.getAttribute("detalhes");
+                       if (detalhes != null) { %>
+                        <h5>Stack trace:</h5>
+                        <pre style="max-height:320px;overflow:auto;background:#fff;padding:12px;border-radius:6px;border:1px solid #eee;"><%= detalhes %></pre>
+                    <% } %>
                 </div>
             <% } %>
 
@@ -60,7 +65,6 @@
                 <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
                 <a href="${pageContext.request.contextPath}/" class="btn">Página Inicial</a>
                 <% 
-                    // Verifica se há um usuário logado para mostrar o dashboard apropriado
                     Object usuarioLogado = session.getAttribute("usuarioLogado");
                     if (usuarioLogado != null) {
                 %>
