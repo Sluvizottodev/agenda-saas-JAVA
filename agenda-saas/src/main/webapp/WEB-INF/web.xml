@@ -16,4 +16,13 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>br.cefet.agendasaas.controller.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/auth/login</url-pattern>
+  </servlet-mapping>
+
 </web-app>

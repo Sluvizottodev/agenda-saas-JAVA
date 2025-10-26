@@ -1,25 +1,15 @@
-<!DOCTYPE hibernate-configuration PUBLIC 
-"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
 
 <hibernate-configuration>
     <session-factory>
-        <!-- Conexão com o banco (padrões; prefira sobrescrever via System properties ou colocar em um profile seguro) -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/agenda_saas?useSSL=false&amp;serverTimezone=UTC</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
-
-        <!-- Dialeto SQL -->
+        <property name="hibernate.connection.password">rootpass</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
-
-        <!-- Criar/atualizar tabelas automaticamente (dev only) -->
         <property name="hibernate.hbm2ddl.auto">update</property>
-
-        <!-- Mostrar SQL no console -->
         <property name="hibernate.show_sql">true</property>
 
-        <!-- Mapeamento das entidades anotadas -->
         <mapping class="br.cefet.agendasaas.model.entidades.Cliente"/>
         <mapping class="br.cefet.agendasaas.model.entidades.Prestador"/>
         <mapping class="br.cefet.agendasaas.model.entidades.Usuario"/>
@@ -28,6 +18,5 @@
         <mapping class="br.cefet.agendasaas.model.entidades.HorarioDisponivel"/>
         <mapping class="br.cefet.agendasaas.model.entidades.Pagamento"/>
         <mapping class="br.cefet.agendasaas.model.entidades.Notificacao"/>
-
     </session-factory>
-</hibernate-configuration>
+</>

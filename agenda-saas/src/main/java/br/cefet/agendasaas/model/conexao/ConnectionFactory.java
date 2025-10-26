@@ -13,7 +13,7 @@ public class ConnectionFactory {
         String host = getenvOrDefault("DB_HOST", "localhost");
         String port = getenvOrDefault("DB_PORT", "3306");
         String db = getenvOrDefault("DB_NAME", "agenda_saas");
-        return String.format("jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC", host, port, db);
+    return String.format("jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", host, port, db);
     }
 
     private static String getenvOrDefault(String name, String defaultValue) {
