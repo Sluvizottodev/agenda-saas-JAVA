@@ -62,7 +62,6 @@ public class AgendamentoServlet extends GenericServlet {
             }
 
         } catch (Exception e) {
-            // Delegar ao handler centralizado para logging e renderização adequada
             handleException(request, response, e);
         }
     }
@@ -130,7 +129,7 @@ public class AgendamentoServlet extends GenericServlet {
                         prestador = null;
                     }
 
-                    Cliente clienteObj = (Cliente) usuario; // já é cliente
+                    Cliente clienteObj = (Cliente) usuario; // ja eh cliente
                     EmailUtils.notifyAgendamentoAsync(agendamento, servico, prestador, clienteObj);
                 } catch (Throwable t) {
                     System.err.println("Falha ao disparar notificações por e-mail: " + t.getMessage());

@@ -25,7 +25,6 @@ public class ConnectionFactory {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException firstEx) {
-            // Tentativas de fallback com credenciais conhecidas do ambiente de teste
             try {
                 System.out.println("ConnectionFactory: falha com credenciais iniciais, tentando 'agenda'@'rootpass'");
                 return DriverManager.getConnection(URL, "agenda", "rootpass");
@@ -34,7 +33,6 @@ public class ConnectionFactory {
                     System.out.println("ConnectionFactory: falha com 'agenda', tentando 'root'@'rootpass'");
                     return DriverManager.getConnection(URL, "root", "rootpass");
                 } catch (SQLException thirdEx) {
-                    // Nenhuma tentativa funcionou, propagar a exceção original com contexto
                     RuntimeException re = new RuntimeException("Erro ao conectar ao banco", firstEx);
                     re.addSuppressed(secondEx);
                     re.addSuppressed(thirdEx);

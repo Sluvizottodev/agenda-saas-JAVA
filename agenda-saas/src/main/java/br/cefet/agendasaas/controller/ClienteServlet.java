@@ -31,7 +31,6 @@ public class ClienteServlet extends GenericServlet {
 
         try (PrintWriter out = resp.getWriter()) {
 
-            // Validação básica
             if (nome == null || email == null || senha == null || cpf == null ||
                 nome.trim().isEmpty() || email.trim().isEmpty() || senha.trim().isEmpty() || cpf.trim().isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -39,7 +38,6 @@ public class ClienteServlet extends GenericServlet {
                 return;
             }
 
-            // Cria o objeto Cliente
             Cliente cliente = new Cliente();
             cliente.setNome(nome);
             cliente.setEmail(email);
@@ -47,7 +45,6 @@ public class ClienteServlet extends GenericServlet {
             cliente.setCpf(cpf);
             cliente.setTipo(TipoUsuario.CLIENTE);
 
-            // Tenta salvar no banco
             boolean sucesso = clienteDAO.inserir(cliente);
 
             if (sucesso) {
