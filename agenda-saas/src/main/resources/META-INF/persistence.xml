@@ -6,25 +6,25 @@
 
     <persistence-unit name="agendaPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
-        <!-- Exclude unlisted classes = false para escanear entidades no módulo -->
+        <class>br.cefet.agendasaas.model.entidades.Usuario</class>
+        <class>br.cefet.agendasaas.model.entidades.Cliente</class>
+        <class>br.cefet.agendasaas.model.entidades.Prestador</class>
+        <class>br.cefet.agendasaas.model.entidades.Servico</class>
+        <class>br.cefet.agendasaas.model.entidades.Pagamento</class>
+        <class>br.cefet.agendasaas.model.entidades.Notificacao</class>
+        <class>br.cefet.agendasaas.model.entidades.HorarioDisponivel</class>
+        <class>br.cefet.agendasaas.model.entidades.Agendamento</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
-
         <properties>
-            <!-- JDBC -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/agenda_saas?useSSL=false&amp;serverTimezone=UTC"/>
-            <property name="jakarta.persistence.jdbc.user" value="agenda"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/agenda_saas?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="rootpass"/>
-
-            <!-- Hibernate specifics -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-
-            <!-- Optional: scanning behavior -->
-            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.archive.autodetection" value="class,hbm"/>
         </properties>
     </persistence-unit>
 
