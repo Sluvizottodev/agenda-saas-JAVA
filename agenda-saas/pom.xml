@@ -29,6 +29,18 @@
       <version>8.0.33</version>
     </dependency>
 
+    <!-- JSTL (Jakarta) - required for JSP taglibs (c: tags) on Tomcat 10+ -->
+    <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+
     <!-- Servlet API (provided by container like Tomcat) -->
     <dependency>
       <groupId>jakarta.servlet</groupId>
