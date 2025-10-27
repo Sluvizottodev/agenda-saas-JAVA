@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-// contrato genérico para repositórios
-
 public interface GenericRepository<T, ID extends Serializable> {
 
     Optional<T> findById(ID id);
@@ -29,4 +27,3 @@ public interface GenericRepository<T, ID extends Serializable> {
     List<T> findWithQuery(String hql, int page, int size, Object... params);
 
 }
-

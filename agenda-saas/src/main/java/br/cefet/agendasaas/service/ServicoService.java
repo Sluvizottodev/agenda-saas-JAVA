@@ -13,6 +13,10 @@ public class ServicoService {
         this.dao = new ServicoDAO();
     }
 
+    public ServicoService(ServicoDAO dao) {
+        this.dao = dao;
+    }
+
     public boolean cadastrar(Servico s) {
         return dao.inserir(s);
     }

@@ -7,10 +7,14 @@ import br.cefet.agendasaas.model.entidades.Notificacao;
 
 public class NotificacaoService {
 
-    private final GenericDAO<Notificacao, Integer> dao = new GenericDAO<>(Notificacao.class);
+    private final GenericDAO<Notificacao, Integer> dao;
 
     public NotificacaoService() {
-        // construtor padrão
+        this.dao = new GenericDAO<>(Notificacao.class);
+    }
+
+    public NotificacaoService(GenericDAO<Notificacao, Integer> dao) {
+        this.dao = dao;
     }
 
     public Notificacao criar(Notificacao n) {

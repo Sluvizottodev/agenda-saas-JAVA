@@ -1,6 +1,9 @@
 package br.cefet.agendasaas.model.entidades;
+
 import br.cefet.agendasaas.model.enums.TipoUsuario;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("PRESTADOR")
@@ -16,6 +19,14 @@ public class Prestador extends Usuario {
     private String cnpj;
 
     public Prestador() {
+        this.tipo = TipoUsuario.PRESTADOR;
+    }
+
+    public Prestador(String nome, String email, String senha, String telefone, String especializacao, String cnpj) {
+        super(nome, email, senha);
+        this.telefone = telefone;
+        this.especializacao = especializacao;
+        this.cnpj = cnpj;
         this.tipo = TipoUsuario.PRESTADOR;
     }
 
@@ -43,4 +54,3 @@ public class Prestador extends Usuario {
         this.cnpj = cnpj;
     }
 }
-

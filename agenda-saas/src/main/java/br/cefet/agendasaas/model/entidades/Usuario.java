@@ -20,6 +20,15 @@ public abstract class Usuario extends Entidade {
     @Transient
     protected TipoUsuario tipo;
 
+    protected Usuario() {
+    }
+
+    protected Usuario(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -52,4 +61,3 @@ public abstract class Usuario extends Entidade {
         this.tipo = tipo;
     }
 }
-

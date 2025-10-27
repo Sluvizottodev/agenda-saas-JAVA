@@ -43,9 +43,6 @@ public class HorarioDisponivel extends Entidade {
         this.disponivel = disponivel;
     }
 
-    // Getters e Setters
-    // id herdado de Entidade
-
     public Integer getPrestadorId() {
         return prestadorId;
     }
@@ -134,4 +131,3 @@ public class HorarioDisponivel extends Entidade {
         return Integer.hashCode(id);
     }
 }
-

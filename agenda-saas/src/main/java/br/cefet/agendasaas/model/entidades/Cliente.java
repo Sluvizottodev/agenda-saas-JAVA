@@ -16,6 +16,12 @@ public class Cliente extends Usuario {
         this.tipo = TipoUsuario.CLIENTE;
     }
 
+    public Cliente(String nome, String email, String senha, String cpf) {
+        super(nome, email, senha);
+        this.cpf = cpf;
+        this.tipo = TipoUsuario.CLIENTE;
+    }
+
     public String getCpf() {
         return cpf;
     }
@@ -24,4 +30,3 @@ public class Cliente extends Usuario {
         this.cpf = cpf;
     }
 }
-

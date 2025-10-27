@@ -10,7 +10,7 @@ public class PrestadorService {
     private final GenericDAO<Prestador, Integer> dao = new GenericDAO<>(Prestador.class);
 
     public PrestadorService() {
-        // construtor padrão
+        
     }
 
     public Prestador criar(Prestador p) {

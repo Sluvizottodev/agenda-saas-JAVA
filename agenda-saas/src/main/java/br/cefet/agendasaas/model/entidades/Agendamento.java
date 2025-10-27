@@ -34,9 +34,6 @@ public class Agendamento extends Entidade {
         this.status = status;
     }
 
-    // Getters e Setters
-    // id herdado de Entidade
-
     public Integer getClienteId() {
         return clienteId;
     }
@@ -89,4 +86,3 @@ public class Agendamento extends Entidade {
                 '}';
     }
 }
-

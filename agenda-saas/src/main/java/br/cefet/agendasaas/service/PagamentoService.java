@@ -10,7 +10,7 @@ public class PagamentoService {
     private final GenericDAO<Pagamento, Integer> dao = new GenericDAO<>(Pagamento.class);
 
     public PagamentoService() {
-        // construtor padrão
+        
     }
 
     public Pagamento criar(Pagamento p) {
