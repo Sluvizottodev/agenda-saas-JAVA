@@ -4,7 +4,6 @@
 <%@ page import="br.cefet.agendasaas.model.entidades.Servico" %>
 <%@ page import="java.util.List" %>
 
-<%-- Definições de cabeçalho e CSS por página --%>
 <c:set var="pageTitle" value="Agendar - AgendaSaaS" />
 <c:set var="pageRole" value="Cliente" />
 <c:set var="pageCss" value="" />

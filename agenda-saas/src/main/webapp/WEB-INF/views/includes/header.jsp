@@ -25,10 +25,20 @@
         <nav>
             <a href="${pageContext.request.contextPath}/" class="btn">Início</a>
             <c:choose>
-                <c:when test="${not empty sessionScope.usuarioLogado}">
-                    <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-secondary">Dashboard</a>
-                    <a href="${pageContext.request.contextPath}/auth/logout" class="btn btn-cancelar">Sair</a>
-                </c:when>
+                    <c:when test="${not empty sessionScope.usuarioLogado}">
+                        <c:choose>
+                            <c:when test="${sessionScope.usuarioLogado.tipo == 'CLIENTE'}">
+                                <a href="${pageContext.request.contextPath}/dashboard/cliente" class="btn btn-secondary">Dashboard</a>
+                            </c:when>
+                            <c:when test="${sessionScope.usuarioLogado.tipo == 'PRESTADOR'}">
+                                <a href="${pageContext.request.contextPath}/dashboard/prestador" class="btn btn-secondary">Dashboard</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">Dashboard</a>
+                            </c:otherwise>
+                        </c:choose>
+                        <a href="${pageContext.request.contextPath}/auth/logout" class="btn btn-cancelar">Sair</a>
+                    </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/auth/login.jsp" class="btn btn-secondary">Entrar</a>
                     <a href="${pageContext.request.contextPath}/auth/cadastro.jsp" class="btn">Cadastrar</a>
