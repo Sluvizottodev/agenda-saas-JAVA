@@ -1,9 +1,8 @@
-package br.cefet.agendasaas.hibernate;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+package br.cefet.agendaSaas.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.Test;
 
 import br.cefet.agendasaas.utils.HibernateUtil;
