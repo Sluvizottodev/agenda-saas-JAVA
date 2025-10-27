@@ -310,7 +310,7 @@ public class HorarioDisponivelDAO {
             }
 
             return sucesso;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             return false;
         }

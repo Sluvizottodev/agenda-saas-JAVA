@@ -7,9 +7,15 @@ import br.cefet.agendasaas.model.entidades.Usuario;
 
 public class UsuarioDAO {
 
-    private final GenericDAO<Usuario, Integer> dao = new GenericDAO<>(Usuario.class);
+    private final GenericDAO<Usuario, Integer> dao;
 
-    // default constructor
+    public UsuarioDAO() {
+        this.dao = new GenericDAO<>(Usuario.class);
+    }
+
+    public UsuarioDAO(GenericDAO<Usuario, Integer> dao) {
+        this.dao = dao;
+    }
 
     public Usuario save(Usuario usuario) {
         return dao.save(usuario);
@@ -19,7 +25,6 @@ public class UsuarioDAO {
         return dao.findById(id);
     }
 
-    // compatibility methods (legacy API)
     public boolean inserir(Usuario usuario) {
         Usuario saved = save(usuario);
         return saved != null && saved.getId() != null;
