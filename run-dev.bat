@@ -23,6 +23,18 @@ set MYSQL_IMAGE=mysql:8.0
 rem --- Detecta diretorio do script
 set SCRIPT_DIR=%~dp0
 
+rem --- Se existir .env na pasta do script, carregue as variaveis
+if exist "%SCRIPT_DIR%\.env" (
+  echo Carregando variaveis de ambiente de %SCRIPT_DIR%\.env
+  for /f "usebackq tokens=1* delims==" %%A in ("%SCRIPT_DIR%\.env") do (
+    set "_KEY=%%A"
+    set "_VAL=%%B"
+    if not "!_KEY:~0,1!"=="#" (
+      set "%%A=%%B"
+    )
+  )
+)
+
 echo Removendo container antigo (se existir)...
 docker rm -f %CONTAINER_NAME% >nul 2>&1
 
