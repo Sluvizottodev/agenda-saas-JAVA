@@ -55,9 +55,9 @@ public class ErrorHandlingFilter implements Filter {
                     pw.println(stack);
                     pw.println();
                 }
-            } catch (Exception ioe) {
-                // erro ao gravar log secundário — ignorar para evitar mascarar a exceção
-                // original
+            } catch (java.io.IOException ioe) {
+                System.err.println("ErrorHandlingFilter: falha ao escrever log secundário: " + ioe.getMessage());
+                ioe.printStackTrace(System.err);
             }
 
             boolean ajax = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
@@ -78,7 +78,7 @@ public class ErrorHandlingFilter implements Filter {
                 request.setAttribute("detalhes", stack);
                 try {
                     req.getRequestDispatcher("/utils/erro.jsp").forward(request, response);
-                } catch (Exception e) {
+                } catch (jakarta.servlet.ServletException | java.io.IOException e) {
                     resp.setContentType("text/plain;charset=UTF-8");
                     resp.getWriter().write("Ocorreu um erro interno e a página de erro não pôde ser renderizada.");
                 }

@@ -10,9 +10,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 
-/**
- * Forces UTF-8 on every request/response to keep accented characters intact.
- */
 @WebFilter("/*")
 public class EncodingFilter implements Filter {
 
@@ -20,7 +17,7 @@ public class EncodingFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-        // no-op
+
     }
 
     @Override
@@ -37,6 +34,6 @@ public class EncodingFilter implements Filter {
 
     @Override
     public void destroy() {
-        // no-op
+
     }
 }

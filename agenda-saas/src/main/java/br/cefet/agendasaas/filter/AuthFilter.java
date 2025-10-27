@@ -18,7 +18,6 @@ public class AuthFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// nothing special at init for now, but mark initialized
 		this.initialized = true;
 	}
 
@@ -32,7 +31,6 @@ public class AuthFilter implements Filter {
 			return true;
 		String p = path.toLowerCase();
 
-		// Public application endpoints and static resources
 		if (p.startsWith("/auth/"))
 			return true; // login, cadastro, logout pages
 		if (p.equals("/index.jsp") || p.equals("/index") || p.equals("/"))
@@ -43,7 +41,6 @@ public class AuthFilter implements Filter {
 				|| p.endsWith(".woff2") || p.endsWith(".ttf"))
 			return true;
 
-		// public pages
 		if (p.equals("/agendamento-sucesso.jsp") || p.equals("/agendar.jsp"))
 			return true;
 
@@ -70,10 +67,11 @@ public class AuthFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 
-		// Ensure UTF-8 encoding for incoming requests
 		try {
 			req.setCharacterEncoding("UTF-8");
-		} catch (Exception ignored) {
+		} catch (Exception e) {
+			System.err.println("AuthFilter: erro ao setar encoding UTF-8: " + e.getMessage());
+			e.printStackTrace(System.err);
 		}
 
 		if (isPublicPath(req)) {
@@ -89,7 +87,7 @@ public class AuthFilter implements Filter {
 				resp.getWriter().write("{\"error\": \"login_required\"}");
 				return;
 			} else {
-				// redirect to login with original path as next parameter
+
 				String original = req.getRequestURI();
 				String qs = req.getQueryString();
 				if (qs != null && !qs.isEmpty())
@@ -101,7 +99,6 @@ public class AuthFilter implements Filter {
 			}
 		}
 
-		// user present, continue
 		chain.doFilter(request, response);
 	}
 
