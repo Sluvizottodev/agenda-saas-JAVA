@@ -61,7 +61,7 @@ public class AgendamentoServlet extends GenericServlet {
                 request.getRequestDispatcher("/agendamentos.jsp").forward(request, response);
             }
 
-        } catch (Exception e) {
+        } catch (jakarta.servlet.ServletException | java.io.IOException e) {
             handleException(request, response, e);
         }
     }
@@ -87,27 +87,23 @@ public class AgendamentoServlet extends GenericServlet {
         }
 
         try {
-            String servicoIdParam = request.getParameter("servicoId");
-            String dataParam = request.getParameter("data");
-            String horaParam = request.getParameter("hora");
+            int servicoId = br.cefet.agendasaas.utils.InputValidator.parsePositiveInt(request.getParameter("servicoId"),
+                    "Serviço");
+            LocalDate data = java.time.LocalDate.parse(
+                    br.cefet.agendasaas.utils.InputValidator.requireNonBlank(request.getParameter("data"), "Data"));
+            LocalTime hora = java.time.LocalTime.parse(
+                    br.cefet.agendasaas.utils.InputValidator.requireNonBlank(request.getParameter("hora"), "Hora"));
             String observacoes = request.getParameter("observacoes");
 
-            if (servicoIdParam == null || dataParam == null || horaParam == null) {
-                throw new IllegalArgumentException("Todos os campos obrigatórios devem ser preenchidos.");
-            }
-
-            int servicoId = Integer.parseInt(servicoIdParam);
-            LocalDate data = LocalDate.parse(dataParam);
-            LocalTime hora = LocalTime.parse(horaParam);
             LocalDateTime dataHora = LocalDateTime.of(data, hora);
 
             if (dataHora.isBefore(LocalDateTime.now())) {
-                throw new IllegalArgumentException("A data e horário devem ser futuros.");
+                throw new br.cefet.agendasaas.utils.ValidationException("A data e horário devem ser futuros");
             }
 
             Servico servico = servicoDAO.buscarPorId(servicoId);
             if (servico == null) {
-                throw new IllegalArgumentException("Serviço não encontrado.");
+                throw new br.cefet.agendasaas.utils.ValidationException("Serviço não encontrado");
             }
 
             Agendamento agendamento = new Agendamento();
@@ -126,22 +122,17 @@ public class AgendamentoServlet extends GenericServlet {
                     try {
                         prestador = (Prestador) usuarioDAO.buscarPorId(agendamento.getPrestadorId());
                     } catch (Exception e) {
+                        System.err.println("AgendamentoServlet: falha ao buscar prestador (ID="
+                                + agendamento.getPrestadorId() + "): " + e.getMessage());
+                        e.printStackTrace(System.err);
                         prestador = null;
                     }
 
                     Cliente clienteObj = (Cliente) usuario; // ja eh cliente
                     EmailUtils.notifyAgendamentoAsync(agendamento, servico, prestador, clienteObj);
                 } catch (Exception t) {
-                    java.io.File logFile = new java.io.File(
-                            "c:\\Users\\User\\DEV\\agenda-saas\\agenda-saas\\tomcat-server\\logs\\app-error.log");
-                    try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(logFile, true))) {
-                        pw.println("--- Falha ao disparar notificações por e-mail em " + java.time.LocalDateTime.now()
-                                + " ---");
-                        t.printStackTrace(pw);
-                        pw.println();
-                    } catch (java.io.IOException ioe) {
-                        System.err.println("Falha ao logar erro de notificação: " + ioe.getMessage());
-                    }
+                    System.err.println("AgendamentoServlet: erro ao enviar notificação: " + t.getMessage());
+                    t.printStackTrace(System.err);
                 }
 
                 request.setAttribute("mensagem",
@@ -152,18 +143,12 @@ public class AgendamentoServlet extends GenericServlet {
                 throw new RuntimeException("Erro ao salvar o agendamento no banco de dados.");
             }
 
-        } catch (NumberFormatException e) {
-            request.setAttribute("erro", "Dados inválidos fornecidos.");
+        } catch (br.cefet.agendasaas.utils.ValidationException ve) {
+            request.setAttribute("erro", ve.getMessage());
             carregarFormularioAgendamento(request, response);
-
         } catch (DateTimeParseException e) {
             request.setAttribute("erro", "Data ou horário inválido.");
             carregarFormularioAgendamento(request, response);
-
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("erro", e.getMessage());
-            carregarFormularioAgendamento(request, response);
-
         } catch (Exception e) {
             handleException(request, response, e);
         }

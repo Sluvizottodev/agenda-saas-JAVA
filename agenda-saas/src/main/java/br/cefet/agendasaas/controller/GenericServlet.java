@@ -10,13 +10,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-// servlet base com utilitários
-
 public abstract class GenericServlet extends HttpServlet {
 
     protected Usuario getUsuarioLogado(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) return null;
+        if (session == null)
+            return null;
         return (Usuario) session.getAttribute("usuarioLogado");
     }
 
@@ -51,4 +50,3 @@ public abstract class GenericServlet extends HttpServlet {
     }
 
 }
-
