@@ -120,3 +120,63 @@ Fallback e `persistence.xml`:
 Integração com `run-dev.bat` / Docker:
 - O `run-dev.bat` na raiz contém lógica para montar um MySQL em Docker e exportar variáveis de ambiente para a execução local de desenvolvimento. Se você usa esse script, ele já define as variáveis `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` antes de iniciar o container e a aplicação.
 
+## CRUD por entidade (mapa rápido)
+
+A seguir há um resumo dos principais modelos (entidades) do sistema e onde cada operação CRUD está implementada — isso ajuda a entender como criar/ler/atualizar/remover registros no projeto.
+
+- Cliente
+	- Entidade: `br.cefet.agendasaas.model.entidades.Cliente`
+	- Create: `ClienteDAO.inserir(Cliente)` (usado por `ClienteService.cadastrar`) e via formulário de cadastro (`/auth/cadastro` — `CadastroServlet`) com página `src/main/webapp/auth/cadastro.jsp`.
+	- Read: `ClienteDAO.buscarPorId`, `ClienteDAO.listarTodos` (acessíveis via `ClienteService`).
+	- Update: `ClienteDAO.atualizar` (via `ClienteService.atualizar`).
+	- Delete: `ClienteDAO.remover` (via `ClienteService.remover`).
+
+- Prestador (usuário do tipo prestador)
+	- Entidade: `br.cefet.agendasaas.model.entidades.Prestador`
+	- Create: suporte via `CadastroServlet` (inserção JDBC) e também operações via `PrestadorService` que usa `GenericDAO` (`save`). Página de cadastro: `auth/cadastro.jsp`.
+	- Read: `PrestadorService.buscarPorId` / `listarTodos`. Dashboard do prestador: `DashboardPrestadorServlet` (`/dashboard/prestador`) e view em `WEB-INF/views/dashboardPrestador.jsp`.
+	- Update: `PrestadorService.atualizar` (usa `GenericDAO.update`).
+	- Delete: `PrestadorService.remover` (usa `GenericDAO.deleteById`).
+
+- Serviço
+	- Entidade: `br.cefet.agendasaas.model.entidades.Servico`
+	- Create: `ServicoDAO.inserir(Servico)` (acessível por `ServicoService.cadastrar`).
+	- Read: `ServicoDAO.buscarPorId`, `ServicoDAO.listarTodos`, `ServicoDAO.listarPorPrestador` (usado por `AgendamentoServlet` para preencher `/agendar`).
+	- Update: `ServicoDAO.atualizar` (via `ServicoService.atualizar`).
+	- Delete: `ServicoDAO.remover` (via `ServicoService.remover`).
+
+- Horário Disponível
+	- Entidade: `br.cefet.agendasaas.model.entidades.HorarioDisponivel`
+	- Create: `HorarioDisponivelDAO.inserir` (via `HorarioService.cadastrarHorario`).
+	- Read: várias consultas: `listarPorPrestador`, `listarDisponiveisPorPrestador`, `listarPorPrestadorEData`, `listarPorPeriodo`.
+	- Update: `HorarioDisponivelDAO.atualizar` (via `HorarioService.atualizarHorario`).
+	- Delete: `HorarioDisponivelDAO.remover` e `removerPorPrestador` (via `HorarioService.removerHorario`).
+	- Endpoints/Views: `HorarioServlet` mapeado em `/horarios`, `/horarios/cadastrar`, `/horarios/editar`, `/horarios/remover`, `/horarios/gerar` e views em `WEB-INF/views/horarios/` (ex.: `listar.jsp`, `cadastrar.jsp`, `editar.jsp`, `gerar.jsp`).
+
+- Agendamento
+	- Entidade: `br.cefet.agendasaas.model.entidades.Agendamento`
+	- Create: `AgendamentoDAO.inserir` (Chamado por `AgendamentoService.agendar` / `AgendamentoServlet` — POST em `/agendar`).
+	- Read: `AgendamentoDAO.listarPorPrestador`, `AgendamentoDAO.listarPorCliente` (usado em `/agendamentos`).
+	- Update: `AgendamentoDAO.update` / `AgendamentoService.atualizar`.
+	- Delete (cancelar): `AgendamentoDAO.remover` (via `AgendamentoService.cancelar`).
+	- Views: formulário de agendamento `WEB-INF/views/agendar.jsp` e `WEB-INF/views/agendamento-sucesso.jsp`.
+
+- Pagamento
+	- Entidade: `br.cefet.agendasaas.model.entidades.Pagamento`
+	- Implementação de persistência: `PagamentoService` usa `GenericDAO<Pagamento,Integer>` (CRUD básico: criar/buscar/atualizar/remover via `GenericDAO`). Observação: `PagamentoDAO` está presente mas vazio; a lógica atual fica em `PagamentoService` + `GenericDAO`.
+
+- Notificação
+	- Entidade: `br.cefet.agendasaas.model.entidades.Notificacao`
+	- Persistência: `NotificacaoService` usa `GenericDAO<Notificacao,Integer>` (criar/buscar/listar/atualizar/remover via `GenericDAO`).
+
+- Usuário (abstrato) / Autenticação
+	- Entidade base: `br.cefet.agendasaas.model.entidades.Usuario` (subclasses `Cliente` e `Prestador`).
+	- Cadastro: via `CadastroServlet` (`/auth/cadastro`) e view `auth/cadastro.jsp`.
+	- Login: `LoginServlet` (`/auth/login`) utiliza `UsuarioDAO.buscarPorEmailSenha`.
+	- Operações CRUD genéricas: `UsuarioDAO` usa `GenericDAO<Usuario,Integer>` para operações básicas (`save`, `findById`, `update`, `deleteById`).
+
+- Camadas:
+	- DAO: acesso direto ao banco (JDBC ou JPA).
+	- Service: regras de negócio e validações (`*Service` classes).
+	- Controller/Servlet: mapeamento de URL e apresentação (JSP). Exemplos: `HorarioServlet`, `AgendamentoServlet`, `CadastroServlet`, `LoginServlet`.
+
