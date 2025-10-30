@@ -1,75 +1,52 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><c:out value="${pageTitle}" default="AgendaSaaS"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css">
-    <style>
-        main {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        h2 {
-            color: var(--cor-primaria);
-        }
-
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .card {
-            flex: 1 1 300px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: var(--sombra-padrao);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table th, table td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 18px;
-            background-color: var(--cor-primaria);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-        }
-
-        @media (max-width: 768px) {
-            .cards {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <c:if test="${not empty pageCss}">
+        <style>
+            <c:out value="${pageCss}" escapeXml="false"/>
+        </style>
+    </c:if>
 </head>
 <body>
+
 <header>
-    <h1>AgendaSaaS - <c:out value="${pageRole}" default="Área"/></h1>
-    <p>Bem-vindo, <strong>
-        <c:choose>
-            <c:when test="${not empty cliente}">${cliente.nome}</c:when>
-            <c:when test="${not empty prestador}">${prestador.nome}</c:when>
-            <c:otherwise><c:out value="${userName}" default="Usuário"/></c:otherwise>
-        </c:choose>
-    </strong></p>
+    <div class="container header-bar">
+        <div>
+            <h1>AgendaSaaS</h1>
+            <div class="header-subtitle"> <c:out value="${pageRole}" default="Área"/></div>
+        </div>
+
+        <nav>
+            <a href="${pageContext.request.contextPath}/" class="btn">Início</a>
+            <c:choose>
+                    <c:when test="${not empty sessionScope.usuarioLogado}">
+                        <c:choose>
+                            <c:when test="${sessionScope.usuarioLogado.tipo == 'CLIENTE'}">
+                                <a href="${pageContext.request.contextPath}/dashboard/cliente" class="btn btn-secondary">Dashboard</a>
+                            </c:when>
+                            <c:when test="${sessionScope.usuarioLogado.tipo == 'PRESTADOR'}">
+                                <a href="${pageContext.request.contextPath}/dashboard/prestador" class="btn btn-secondary">Dashboard</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">Dashboard</a>
+                            </c:otherwise>
+                        </c:choose>
+                        <a href="${pageContext.request.contextPath}/auth/logout" class="btn btn-cancelar">Sair</a>
+                    </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/auth/login.jsp" class="btn btn-secondary">Entrar</a>
+                    <a href="${pageContext.request.contextPath}/auth/cadastro.jsp" class="btn">Cadastrar</a>
+                </c:otherwise>
+            </c:choose>
+        </nav>
+    </div>
 </header>
 
-<main>
+<main class="container">
+

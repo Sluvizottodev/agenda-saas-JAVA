@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="pageTitle" value="Dashboard - Cliente | AgendaSaaS" />
 <c:set var="pageRole" value="Cliente" />
+<c:set var="pageCss" value=".cards{gap:16px;} table th, table td{font-size:0.95rem;}" />
 <jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
     <h2>Seus Agendamentos</h2>
@@ -55,3 +56,4 @@
     </div>
 
 <jsp:include page="/WEB-INF/views/includes/footer.jsp" />
+

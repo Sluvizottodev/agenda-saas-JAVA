@@ -1,66 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro - AgendaSaaS</title>
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        .form-container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: var(--sombra-padrao);
-        }
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+<c:set var="pageTitle" value="Cadastro - AgendaSaaS" />
+<c:set var="pageRole" value="Auth" />
+<c:set var="pageCss" value=".form-container{max-width:600px;margin:40px auto;background:#fff;padding:30px;border-radius:8px;box-shadow:var(--sombra-padrao);} .form-actions{text-align:center;} .hidden{display:none;}" />
 
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
+<jsp:include page="/WEB-INF/views/includes/header.jsp" />
 
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
+<script>
+    function toggleCampos() {
+        const tipo = document.getElementById("tipo").value;
+        const clienteEl = document.getElementById("campos-cliente");
+        const prestadorEl = document.getElementById("campos-prestador");
+        if (clienteEl) clienteEl.style.display = (tipo === "cliente") ? "block" : "none";
+        if (prestadorEl) prestadorEl.style.display = (tipo === "prestador") ? "block" : "none";
+    }
 
-        .form-actions {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .form-actions button {
-            width: 100%;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
-    <script>
-        function toggleCampos() {
-            const tipo = document.getElementById("tipo").value;
-            document.getElementById("campos-cliente").style.display = (tipo === "cliente") ? "block" : "none";
-            document.getElementById("campos-prestador").style.display = (tipo === "prestador") ? "block" : "none";
-        }
-
-        // Executa ao carregar a página (para manter campos visíveis após reload, se necessário)
-        window.addEventListener("DOMContentLoaded", toggleCampos);
-    </script>
-</head>
-<body>
-<header>
-    <h1>AgendaSaaS</h1>
-    <p>Cadastre-se como Cliente ou Prestador</p>
-</header>
+    window.addEventListener("DOMContentLoaded", toggleCampos);
+</script>
 
 <main>
     <div class="form-container">
@@ -120,13 +77,10 @@
         
         <p style="text-align:center; margin-top:15px;">
             Já tem conta? <a href="login.jsp">Fazer Login</a><br>
-            <a href="../index.jsp" style="font-size: 0.9em; color: #666;">← Voltar à página inicial</a>
+            <a href="${pageContext.request.contextPath}/" style="font-size: 0.9em; color: #666;">← Voltar à página inicial</a>
         </p>
     </div>
 </main>
 
-<footer>
-    &copy; 2025 AgendaSaaS.
-</footer>
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/includes/footer.jsp" />
+
