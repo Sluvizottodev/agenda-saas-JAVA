@@ -79,11 +79,16 @@ Após a execução, verifique logs em `agenda-saas/tomcat-server/logs/tomcat-con
 ## Banco de dados
 
 - O projeto inclui `agenda-saas/init-database.sql` e `database-schema.sql` com scripts de criação/seed.
-- Atualize as credenciais em `src/main/resources/META-INF/persistence.xml` conforme seu ambiente.
+ - O projeto inclui `agenda-saas/init-database.sql` e `database-schema.sql` com scripts de criação/seed.
 
-Credenciais de desenvolvimento (padrão usado nos exemplos):
+Configuração de conexão recomendada:
 
-- usuário: `root`
+- A aplicação agora prioriza variáveis de ambiente para configurar a conexão (JDBC e JPA).
+- Para desenvolvimento o `run-dev.bat` cria um container MySQL e, por padrão, cria o usuário de aplicação `agenda` com senha `rootpass` e banco `agenda_saas`.
+
+Credenciais de exemplo usadas pelo `run-dev.bat`:
+
+- usuário: `agenda`
 - senha: `rootpass`
 - banco: `agenda_saas`
 
@@ -99,7 +104,8 @@ O projeto também aceita configuração por variáveis de ambiente — o código
 - DB_PORT (padrão: 3306)
 - DB_NAME (padrão: agenda_saas)
 - DB_USER (padrão: root)
-- DB_PASSWORD (padrão: vazio)
+ - DB_USER (padrão: agenda)
+ - DB_PASSWORD (padrão: rootpass)
 
 Existe um arquivo de exemplo em `.env.example` na raiz do repositório. Para uso local, copie esse arquivo para `.env` e preencha valores sensíveis; o `run-dev.bat` e os scripts de desenvolvimento irão carregar automaticamente esse `.env` quando presente. Recomendamos o fluxo:
 
@@ -115,10 +121,10 @@ Se preferir não usar `run-dev.bat`, você também pode exportar as variáveis m
 
 
 Fallback e `persistence.xml`:
-- O `persistence.xml` presente em `src/main/resources/META-INF/persistence.xml` contém valores de exemplo e é usado como fallback. Se preferir, mantenha as credenciais no `persistence.xml` para ambientes simples, mas em produção use variáveis de ambiente ou configuração segura.
+- O `persistence.xml` presente em `src/main/resources/META-INF/persistence.xml` permanece no projeto como fallback e para listar as entidades. A partir da mudança recente o JPA (EMF) passa a receber as propriedades de conexão a partir das variáveis de ambiente quando presentes — ou seja, tanto a camada JDBC (`ConnectionFactory`) quanto o provider JPA (`JPAUtil`) usam as mesmas variáveis de ambiente.
 
 Integração com `run-dev.bat` / Docker:
-- O `run-dev.bat` na raiz contém lógica para montar um MySQL em Docker e exportar variáveis de ambiente para a execução local de desenvolvimento. Se você usa esse script, ele já define as variáveis `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` antes de iniciar o container e a aplicação.
+- O `run-dev.bat` na raiz contém lógica para montar um MySQL em Docker, criar o banco/usuário `agenda`/`rootpass` e exportar variáveis de ambiente para a execução local. Se você usa esse script, tanto JPA quanto JDBC vão se conectar usando as variáveis que o script define.
 
 ## CRUD por entidade (mapa rápido)
 
