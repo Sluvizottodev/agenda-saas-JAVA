@@ -36,6 +36,10 @@ public class HorarioService {
 
             return horarioDAO.inserir(horario);
 
+        } catch (IllegalArgumentException | NullPointerException e) {
+            // Tratar exceções específicas
+            e.printStackTrace();
+            return false;
         } catch (Exception e) {
             System.err.println("Erro ao cadastrar horário (DB): " + e.getMessage());
             return false;

@@ -2,6 +2,7 @@ package br.cefet.agendasaas.model.entidades;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -117,13 +118,11 @@ public class HorarioDisponivel extends Entidade {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        HorarioDisponivel that = (HorarioDisponivel) obj;
-        return id == that.id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HorarioDisponivel that = (HorarioDisponivel) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override

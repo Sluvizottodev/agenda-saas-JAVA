@@ -1,7 +1,6 @@
 package br.cefet.agendasaas.utils;
 import java.util.HashMap;
 import java.util.Map;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -43,8 +42,8 @@ public class JPAUtil {
             EntityManagerFactory factory = Persistence.createEntityManagerFactory("agendaPU", props);
 
             try {
-                var metamodel = factory.getMetamodel();
-                var entities = metamodel.getEntities();
+                jakarta.persistence.metamodel.Metamodel metamodel = factory.getMetamodel();
+                java.util.Set<jakarta.persistence.metamodel.EntityType<?>> entities = metamodel.getEntities();
                 System.out.println("[JPAUtil] Registered entities in metamodel:");
                 entities.stream().map(e -> e.getName()).sorted().forEach(n -> System.out.println(" - " + n));
             } catch (Exception e) {
@@ -63,7 +62,8 @@ public class JPAUtil {
         if (emf == null) {
             synchronized (JPAUtil.class) {
                 if (emf == null) {
-                    emf = buildEMF();
+                    EntityManagerFactory tempFactory = Persistence.createEntityManagerFactory("default");
+                    emf = tempFactory;
                 }
             }
         }

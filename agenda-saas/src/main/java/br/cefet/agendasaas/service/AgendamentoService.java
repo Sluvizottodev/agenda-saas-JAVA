@@ -1,39 +1,80 @@
 package br.cefet.agendasaas.service;
 
+import br.cefet.agendasaas.dao.AgendamentoDAO;
+import br.cefet.agendasaas.dao.ServicoDAO;
+import br.cefet.agendasaas.model.entidades.Agendamento;
+import br.cefet.agendasaas.model.entidades.Servico;
+import br.cefet.agendasaas.utils.ValidationException;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
-import br.cefet.agendasaas.dao.AgendamentoDAO;
-import br.cefet.agendasaas.model.entidades.Agendamento;
-
+@Service
 public class AgendamentoService {
 
-    private final AgendamentoDAO dao;
+    private final AgendamentoDAO agendamentoDAO;
+    private final ServicoDAO servicoDAO;
 
-    public AgendamentoService() {
-        this.dao = new AgendamentoDAO();
+    public AgendamentoService(AgendamentoDAO agendamentoDAO, ServicoDAO servicoDAO) {
+        this.agendamentoDAO = agendamentoDAO;
+        this.servicoDAO = servicoDAO;
     }
 
-    public boolean agendar(Agendamento a) {
-        return dao.inserir(a);
+    public List<Agendamento> listarAgendamentos(Integer usuarioId, String tipoUsuario) {
+        if ("cliente".equalsIgnoreCase(tipoUsuario)) {
+            return agendamentoDAO.listarPorCliente(usuarioId);
+        } else {
+            return agendamentoDAO.listarPorPrestador(usuarioId);
+        }
     }
 
-    public Agendamento buscarPorId(int id) {
-        return dao.buscarPorId(id);
+    public void criarAgendamento(Agendamento agendamento) throws ValidationException {
+        if (agendamento.getDataHora().isBefore(LocalDateTime.now())) {
+            throw new ValidationException("A data e horário devem ser futuros");
+        }
+
+        Servico servico = servicoDAO.buscarPorId(agendamento.getServicoId());
+        if (servico == null) {
+            throw new ValidationException("Serviço não encontrado");
+        }
+
+        agendamento.setPrestadorId(servico.getPrestadorId());
+        agendamento.setStatus("PENDENTE");
+
+        boolean sucesso = agendamentoDAO.inserir(agendamento);
+        if (!sucesso) {
+            throw new ValidationException("Erro ao salvar o agendamento no banco de dados.");
+        }
     }
 
-    public boolean atualizar(Agendamento a) {
-        return dao.atualizar(a);
+    public void atualizarAgendamento(Agendamento agendamento) throws ValidationException {
+        if (agendamento.getDataHora().isBefore(LocalDateTime.now())) {
+            throw new ValidationException("A data e horário devem ser futuros");
+        }
+
+        boolean sucesso = agendamentoDAO.atualizar(agendamento);
+        if (!sucesso) {
+            throw new ValidationException("Erro ao atualizar o agendamento no banco de dados.");
+        }
     }
 
-    public boolean cancelar(int id) {
-        return dao.remover(id);
+    public void removerAgendamento(int id) throws ValidationException {
+        boolean sucesso = agendamentoDAO.remover(id);
+        if (!sucesso) {
+            throw new ValidationException("Erro ao remover o agendamento no banco de dados.");
+        }
     }
 
-    public List<Agendamento> listarPorPrestador(int prestadorId) {
-        return dao.listarPorPrestador(prestadorId);
+    public List<Servico> listarServicosDisponiveis() {
+        return servicoDAO.listarTodos();
     }
 
-    public List<Agendamento> listarPorCliente(int clienteId) {
-        return dao.listarPorCliente(clienteId);
+    public Agendamento buscarAgendamentoPorId(int id) throws ValidationException {
+        Agendamento agendamento = agendamentoDAO.buscarPorId(id);
+        if (agendamento == null) {
+            throw new ValidationException("Agendamento não encontrado.");
+        }
+        return agendamento;
     }
 }

@@ -98,7 +98,7 @@ public class Servico extends Entidade {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Servico servico = (Servico) obj;
-        return id == servico.id;
+        return id.equals(servico.id);
     }
 
     @Override

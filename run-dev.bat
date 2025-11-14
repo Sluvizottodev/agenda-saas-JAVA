@@ -136,20 +136,6 @@ timeout /t 1 >nul
 call catalina.bat start >nul 2>&1
 popd
 
-echo Aguardando aplicacao responder (http://localhost:8080/agenda-saas/index.jsp)...
-for /l %%i in (1,1,60) do (
-  powershell -Command "try { Invoke-WebRequest -UseBasicParsing http://localhost:8080/agenda-saas/index.jsp -TimeoutSec 3 | Out-Null; exit 0 } catch { exit 1 }"
-  if !errorlevel! == 0 (
-    echo Aplicacao disponivel.
-    goto :done
-  )
-  timeout /t 1 >nul
-)
-
-echo [ERRO] A aplicacao nao respondeu no tempo esperado.
-exit /b 1
-
-:done
 echo ==================================================
 echo Ambiente de desenvolvimento pronto.
 echo DB: %DB_NAME% em %DB_HOST%:%DB_PORT%
