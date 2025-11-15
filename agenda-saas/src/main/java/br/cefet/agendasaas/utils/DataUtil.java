@@ -12,8 +12,8 @@ public final class DataUtil {
 
 	private DataUtil() { }
 
-	private static final DateTimeFormatter FORMAT_DATE_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(new Locale("pt", "BR"));
-	private static final DateTimeFormatter FORMAT_DATETIME_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withLocale(new Locale("pt", "BR"));
+	private static final DateTimeFormatter FORMAT_DATE_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.of("pt", "BR"));
+	private static final DateTimeFormatter FORMAT_DATETIME_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withLocale(Locale.of("pt", "BR"));
 
 	public static LocalDate parseDatePt(String text) {
 		if (text == null || text.isBlank()) return null;

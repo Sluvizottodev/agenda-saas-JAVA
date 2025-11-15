@@ -1,5 +1,11 @@
 package br.cefet.agendasaas.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.springframework.stereotype.Service;
+
 import br.cefet.agendasaas.dao.ClienteDAO;
 import br.cefet.agendasaas.model.conexao.ConnectionFactory;
 import br.cefet.agendasaas.model.entidades.Cliente;
@@ -7,11 +13,6 @@ import br.cefet.agendasaas.model.entidades.Prestador;
 import br.cefet.agendasaas.model.enums.TipoUsuario;
 import br.cefet.agendasaas.utils.InputValidator;
 import br.cefet.agendasaas.utils.ValidationException;
-import org.springframework.stereotype.Service;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 @Service
 public class CadastroService {
@@ -41,7 +42,8 @@ public class CadastroService {
         String sqlPrestador = "INSERT INTO prestador (id, telefone, especializacao, cnpj) VALUES (?, ?, ?, ?)";
 
         try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement stmtUser = con.prepareStatement(sqlUsuario, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmtUser = con.prepareStatement(sqlUsuario,
+                        java.sql.Statement.RETURN_GENERATED_KEYS)) {
 
             stmtUser.setString(1, prestador.getNome());
             stmtUser.setString(2, prestador.getEmail());

@@ -20,10 +20,13 @@ public class AgendamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Agendamento>> listarAgendamentos(@RequestParam Integer usuarioId, @RequestParam String tipoUsuario) {
+    public ResponseEntity<List<Agendamento>> listarAgendamentos(@RequestParam Integer usuarioId,
+            @RequestParam String tipoUsuario) {
         try {
             List<Agendamento> agendamentos = agendamentoService.listarAgendamentos(usuarioId, tipoUsuario);
             return ResponseEntity.ok(agendamentos);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
@@ -32,7 +35,7 @@ public class AgendamentoController {
     @PostMapping
     public ResponseEntity<String> criarAgendamento(@RequestBody Agendamento agendamento) {
         try {
-            agendamentoService.salvarAgendamento(agendamento);
+            agendamentoService.criarAgendamento(agendamento);
             return ResponseEntity.ok("Agendamento criado com sucesso!");
         } catch (ValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -54,7 +57,7 @@ public class AgendamentoController {
     @PutMapping
     public ResponseEntity<String> atualizarAgendamento(@RequestBody Agendamento agendamento) {
         try {
-            agendamentoService.salvarAgendamento(agendamento);
+            agendamentoService.atualizarAgendamento(agendamento);
             return ResponseEntity.ok("Agendamento atualizado com sucesso!");
         } catch (ValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

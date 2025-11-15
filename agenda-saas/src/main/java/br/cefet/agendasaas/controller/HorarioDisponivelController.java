@@ -41,6 +41,9 @@ public class HorarioDisponivelController {
     @GetMapping("/{id}")
     public ResponseEntity<HorarioDisponivel> buscarPorId(@PathVariable Integer id) {
         logger.info("Buscando horário com ID: {}", id);
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
         Optional<HorarioDisponivel> horario = repository.findById(id);
         return horario.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
