@@ -10,13 +10,17 @@ import java.util.Locale;
 
 public final class DataUtil {
 
-	private DataUtil() { }
+	private DataUtil() {
+	}
 
-	private static final DateTimeFormatter FORMAT_DATE_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.of("pt", "BR"));
-	private static final DateTimeFormatter FORMAT_DATETIME_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withLocale(Locale.of("pt", "BR"));
+	private static final DateTimeFormatter FORMAT_DATE_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+			.withLocale(Locale.of("pt", "BR"));
+	private static final DateTimeFormatter FORMAT_DATETIME_PT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+			.withLocale(Locale.of("pt", "BR"));
 
 	public static LocalDate parseDatePt(String text) {
-		if (text == null || text.isBlank()) return null;
+		if (text == null || text.isBlank())
+			return null;
 		try {
 			return LocalDate.parse(text.trim(), FORMAT_DATE_PT);
 		} catch (DateTimeParseException e) {
@@ -25,7 +29,8 @@ public final class DataUtil {
 	}
 
 	public static LocalDateTime parseDateTimePt(String text) {
-		if (text == null || text.isBlank()) return null;
+		if (text == null || text.isBlank())
+			return null;
 		try {
 			return LocalDateTime.parse(text.trim(), FORMAT_DATETIME_PT);
 		} catch (DateTimeParseException e) {
@@ -58,4 +63,3 @@ public final class DataUtil {
 	}
 
 }
-

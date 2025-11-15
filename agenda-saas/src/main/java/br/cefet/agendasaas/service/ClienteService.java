@@ -28,7 +28,7 @@ public class ClienteService {
         if (id <= 0) {
             throw new ValidationException("ID do cliente deve ser positivo.");
         }
-        
+
         Cliente cliente = clienteDAO.buscarPorId(id);
         if (cliente == null) {
             throw new ValidationException("Cliente não encontrado.");
@@ -40,9 +40,9 @@ public class ClienteService {
         if (cliente.getId() <= 0) {
             throw new ValidationException("ID do cliente é obrigatório para atualização.");
         }
-        
+
         validarCliente(cliente);
-        
+
         boolean sucesso = clienteDAO.atualizar(cliente);
         if (!sucesso) {
             throw new ValidationException("Erro ao atualizar cliente no banco de dados.");
@@ -53,18 +53,18 @@ public class ClienteService {
         if (id <= 0) {
             throw new ValidationException("ID do cliente deve ser positivo.");
         }
-        
+
         Cliente cliente = clienteDAO.buscarPorId(id);
         if (cliente == null) {
             throw new ValidationException("Cliente não encontrado para remoção.");
         }
-        
+
         boolean sucesso = clienteDAO.remover(id);
         if (!sucesso) {
             throw new ValidationException("Erro ao remover cliente do banco de dados.");
         }
     }
-    
+
     private void validarCliente(Cliente cliente) throws ValidationException {
         if (cliente == null) {
             throw new ValidationException("Cliente não pode ser nulo.");
