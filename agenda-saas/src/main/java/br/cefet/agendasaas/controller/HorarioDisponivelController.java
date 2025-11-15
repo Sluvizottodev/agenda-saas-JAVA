@@ -71,7 +71,7 @@ public class HorarioDisponivelController {
     public ResponseEntity<String> atualizar(@PathVariable Integer id, @RequestBody HorarioDisponivel horario) {
         logger.info("Atualizando horário com ID: {}", id);
 
-        if (!repository.existsById(id)) {
+        if (id == null || !repository.existsById(id)) {
             logger.error("Horário com ID: {} não encontrado", id);
             return ResponseEntity.notFound().build();
         }
@@ -96,7 +96,7 @@ public class HorarioDisponivelController {
     public ResponseEntity<String> remover(@PathVariable Integer id) {
         logger.info("Removendo horário com ID: {}", id);
 
-        if (!repository.existsById(id)) {
+        if (id == null || !repository.existsById(id)) {
             logger.error("Horário com ID: {} não encontrado", id);
             return ResponseEntity.notFound().build();
         }

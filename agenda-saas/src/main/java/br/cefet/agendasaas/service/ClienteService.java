@@ -1,27 +1,27 @@
+
 package br.cefet.agendasaas.service;
+
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import br.cefet.agendasaas.dao.ClienteDAO;
 import br.cefet.agendasaas.model.entidades.Cliente;
+import br.cefet.agendasaas.repository.ClienteRepository;
 import br.cefet.agendasaas.utils.ValidationException;
 
 @Service
 public class ClienteService {
 
-    private final ClienteDAO clienteDAO;
+    private final ClienteRepository clienteRepository;
 
-    public ClienteService(ClienteDAO clienteDAO) {
-        this.clienteDAO = clienteDAO;
+    public ClienteService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
-    public void cadastrarCliente(Cliente cliente) throws ValidationException {
+    public Cliente cadastrarCliente(Cliente cliente) throws ValidationException {
         validarCliente(cliente);
-
-        boolean sucesso = clienteDAO.inserir(cliente);
-        if (!sucesso) {
-            throw new ValidationException("Erro ao cadastrar cliente no banco de dados.");
-        }
+        return clienteRepository.save(cliente);
     }
 
     public Cliente buscarClientePorId(int id) throws ValidationException {
@@ -29,24 +29,27 @@ public class ClienteService {
             throw new ValidationException("ID do cliente deve ser positivo.");
         }
 
-        Cliente cliente = clienteDAO.buscarPorId(id);
-        if (cliente == null) {
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        if (!cliente.isPresent()) {
             throw new ValidationException("Cliente não encontrado.");
         }
-        return cliente;
+        return cliente.get();
     }
 
-    public void atualizarCliente(Cliente cliente) throws ValidationException {
-        if (cliente.getId() <= 0) {
+    public Cliente atualizarCliente(Cliente cliente) throws ValidationException {
+        if (cliente.getId() == null || cliente.getId() <= 0) {
             throw new ValidationException("ID do cliente é obrigatório para atualização.");
         }
 
         validarCliente(cliente);
-
-        boolean sucesso = clienteDAO.atualizar(cliente);
-        if (!sucesso) {
-            throw new ValidationException("Erro ao atualizar cliente no banco de dados.");
+        
+        // Verifica se o cliente existe
+        Optional<Cliente> existente = clienteRepository.findById(cliente.getId());
+        if (!existente.isPresent()) {
+            throw new ValidationException("Cliente não encontrado para atualização.");
         }
+
+        return clienteRepository.save(cliente);
     }
 
     public void removerCliente(int id) throws ValidationException {
@@ -54,15 +57,28 @@ public class ClienteService {
             throw new ValidationException("ID do cliente deve ser positivo.");
         }
 
-        Cliente cliente = clienteDAO.buscarPorId(id);
-        if (cliente == null) {
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        if (!cliente.isPresent()) {
             throw new ValidationException("Cliente não encontrado para remoção.");
         }
 
-        boolean sucesso = clienteDAO.remover(id);
-        if (!sucesso) {
-            throw new ValidationException("Erro ao remover cliente do banco de dados.");
+        clienteRepository.deleteById(id);
+    }
+
+    public List<Cliente> listarTodosClientes() {
+        return clienteRepository.findAll();
+    }
+
+    public Cliente buscarClientePorEmail(String email) throws ValidationException {
+        if (email == null || email.trim().isEmpty()) {
+            throw new ValidationException("Email é obrigatório.");
         }
+
+        Optional<Cliente> cliente = clienteRepository.findByEmail(email);
+        if (!cliente.isPresent()) {
+            throw new ValidationException("Cliente não encontrado com o email informado.");
+        }
+        return cliente.get();
     }
 
     private void validarCliente(Cliente cliente) throws ValidationException {
