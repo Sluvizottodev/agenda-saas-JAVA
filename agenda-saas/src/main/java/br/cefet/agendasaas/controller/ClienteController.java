@@ -36,6 +36,16 @@ public class ClienteController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<java.util.List<Cliente>> listarClientes() {
+        try {
+            java.util.List<Cliente> clientes = clienteService.listarTodosClientes();
+            return ResponseEntity.ok(clientes);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable int id) {
         try {

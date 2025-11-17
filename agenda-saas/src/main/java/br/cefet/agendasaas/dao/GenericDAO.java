@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import br.cefet.agendasaas.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
-
-import br.cefet.agendasaas.utils.JPAUtil;
 
 public class GenericDAO<T, ID extends Serializable> {
 
@@ -42,7 +41,8 @@ public class GenericDAO<T, ID extends Serializable> {
             tx.commit();
             return entity;
         } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
+            if (tx.isActive())
+                tx.rollback();
             throw e;
         } finally {
             em.close();
@@ -58,7 +58,8 @@ public class GenericDAO<T, ID extends Serializable> {
             tx.commit();
             return merged;
         } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
+            if (tx.isActive())
+                tx.rollback();
             throw e;
         } finally {
             em.close();
@@ -74,7 +75,8 @@ public class GenericDAO<T, ID extends Serializable> {
             em.remove(merged);
             tx.commit();
         } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
+            if (tx.isActive())
+                tx.rollback();
             throw e;
         } finally {
             em.close();
@@ -95,7 +97,8 @@ public class GenericDAO<T, ID extends Serializable> {
             tx.commit();
             return 1;
         } catch (RuntimeException e) {
-            if (tx.isActive()) tx.rollback();
+            if (tx.isActive())
+                tx.rollback();
             throw e;
         } finally {
             em.close();
@@ -143,4 +146,3 @@ public class GenericDAO<T, ID extends Serializable> {
     }
 
 }
-

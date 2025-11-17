@@ -26,10 +26,11 @@ public class AgendamentoService {
         if (usuarioId == null) {
             throw new ValidationException("ID do usuário é obrigatório");
         }
-        if (tipoUsuario == null || (!"cliente".equalsIgnoreCase(tipoUsuario) && !"prestador".equalsIgnoreCase(tipoUsuario))) {
+        if (tipoUsuario == null
+                || (!"cliente".equalsIgnoreCase(tipoUsuario) && !"prestador".equalsIgnoreCase(tipoUsuario))) {
             throw new ValidationException("Tipo de usuário deve ser 'cliente' ou 'prestador'");
         }
-        
+
         if ("cliente".equalsIgnoreCase(tipoUsuario)) {
             return agendamentoRepository.findByClienteId(usuarioId);
         } else {
@@ -39,7 +40,7 @@ public class AgendamentoService {
 
     public void criarAgendamento(Agendamento agendamento) throws ValidationException {
         validarAgendamento(agendamento);
-        
+
         if (agendamento.getDataHora().isBefore(LocalDateTime.now())) {
             throw new ValidationException("A data e horário devem ser futuros");
         }
@@ -59,15 +60,14 @@ public class AgendamentoService {
 
     public void atualizarAgendamento(Agendamento agendamento) throws ValidationException {
         validarAgendamento(agendamento);
-        
-        // Verificar se o agendamento existe antes de atualizar
+
         Integer agendamentoId = agendamento.getId();
         if (agendamentoId == null) {
             throw new ValidationException("ID do agendamento é obrigatório para atualização.");
         }
         agendamentoRepository.findById(agendamentoId)
                 .orElseThrow(() -> new ValidationException("Agendamento não encontrado para atualização."));
-        
+
         if (agendamento.getDataHora().isBefore(LocalDateTime.now())) {
             throw new ValidationException("A data e horário devem ser futuros");
         }
@@ -76,10 +76,9 @@ public class AgendamentoService {
     }
 
     public void removerAgendamento(int id) throws ValidationException {
-        // Verificar se o agendamento existe antes de remover
         agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("Agendamento não encontrado para remoção"));
-        
+
         agendamentoRepository.deleteById(id);
     }
 
@@ -91,7 +90,7 @@ public class AgendamentoService {
         return agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("Agendamento não encontrado."));
     }
-    
+
     private void validarAgendamento(Agendamento agendamento) throws ValidationException {
         if (agendamento == null) {
             throw new ValidationException("Agendamento não pode ser nulo");

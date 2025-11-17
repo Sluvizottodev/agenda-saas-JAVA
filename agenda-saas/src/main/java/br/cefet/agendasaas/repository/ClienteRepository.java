@@ -9,12 +9,10 @@ import br.cefet.agendasaas.model.entidades.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
-    
+
     Optional<Cliente> findByEmail(String email);
-    
-    Optional<Cliente> findByTelefone(String telefone);
-    
+
     boolean existsByEmail(String email);
-    
-    boolean existsByTelefone(String telefone);
+
+    boolean existsByCpf(String cpf);
 }

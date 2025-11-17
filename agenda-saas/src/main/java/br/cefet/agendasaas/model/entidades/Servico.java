@@ -48,8 +48,6 @@ public class Servico extends Entidade {
         this.preco = preco;
     }
 
-
-
     public String getNome() {
         return nome;
     }
@@ -117,4 +115,3 @@ public class Servico extends Entidade {
                 '}';
     }
 }
-

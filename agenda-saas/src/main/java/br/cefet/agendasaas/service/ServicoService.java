@@ -45,8 +45,7 @@ public class ServicoService {
         }
 
         validarServico(servico);
-        
-        // Verifica se o serviço existe
+
         Optional<Servico> existente = servicoRepository.findById(servico.getId());
         if (!existente.isPresent()) {
             throw new ValidationException("Serviço não encontrado para atualização.");

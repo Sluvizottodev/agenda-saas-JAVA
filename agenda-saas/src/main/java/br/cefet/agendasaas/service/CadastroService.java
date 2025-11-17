@@ -1,36 +1,55 @@
 package br.cefet.agendasaas.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import br.cefet.agendasaas.dao.ClienteDAO;
-import br.cefet.agendasaas.model.conexao.ConnectionFactory;
 import br.cefet.agendasaas.model.entidades.Cliente;
 import br.cefet.agendasaas.model.entidades.Prestador;
-import br.cefet.agendasaas.model.enums.TipoUsuario;
+import br.cefet.agendasaas.repository.ClienteRepository;
+import br.cefet.agendasaas.repository.PrestadorRepository;
 import br.cefet.agendasaas.utils.InputValidator;
 import br.cefet.agendasaas.utils.ValidationException;
 
 @Service
+@Transactional
 public class CadastroService {
 
-    public void cadastrarCliente(Cliente cliente) throws ValidationException {
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private PrestadorRepository prestadorRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Cliente cadastrarCliente(Cliente cliente) throws ValidationException {
+        // Validações
         InputValidator.requireNonBlank(cliente.getNome(), "Nome");
         InputValidator.validateEmail(cliente.getEmail());
         InputValidator.requireNonBlank(cliente.getSenha(), "Senha");
         InputValidator.requireNonBlank(cliente.getCpf(), "CPF");
 
-        ClienteDAO clienteDAO = new ClienteDAO();
-        boolean sucesso = clienteDAO.inserir(cliente);
-        if (!sucesso) {
-            throw new ValidationException("Erro ao salvar cliente.");
+        if (clienteRepository.existsByEmail(cliente.getEmail())) {
+            throw new ValidationException("Email já cadastrado");
+        }
+
+        if (clienteRepository.existsByCpf(cliente.getCpf())) {
+            throw new ValidationException("CPF já cadastrado");
+        }
+
+        cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
+
+        try {
+            return clienteRepository.save(cliente);
+        } catch (Exception e) {
+            throw new ValidationException("Erro ao salvar cliente: " + e.getMessage());
         }
     }
 
-    public void cadastrarPrestador(Prestador prestador) throws ValidationException {
+    public Prestador cadastrarPrestador(Prestador prestador) throws ValidationException {
         InputValidator.requireNonBlank(prestador.getNome(), "Nome");
         InputValidator.validateEmail(prestador.getEmail());
         InputValidator.requireNonBlank(prestador.getSenha(), "Senha");
@@ -38,42 +57,19 @@ public class CadastroService {
         InputValidator.requireNonBlank(prestador.getEspecializacao(), "Especialização");
         InputValidator.requireNonBlank(prestador.getCnpj(), "CNPJ");
 
-        String sqlUsuario = "INSERT INTO usuario (nome, email, senha, tipo) VALUES (?, ?, ?, ?)";
-        String sqlPrestador = "INSERT INTO prestador (id, telefone, especializacao, cnpj) VALUES (?, ?, ?, ?)";
+        if (prestadorRepository.existsByEmail(prestador.getEmail())) {
+            throw new ValidationException("Email já cadastrado");
+        }
 
-        try (Connection con = ConnectionFactory.getConnection();
-                PreparedStatement stmtUser = con.prepareStatement(sqlUsuario,
-                        java.sql.Statement.RETURN_GENERATED_KEYS)) {
+        if (prestadorRepository.existsByCnpj(prestador.getCnpj())) {
+            throw new ValidationException("CNPJ já cadastrado");
+        }
 
-            stmtUser.setString(1, prestador.getNome());
-            stmtUser.setString(2, prestador.getEmail());
-            stmtUser.setString(3, prestador.getSenha());
-            stmtUser.setString(4, TipoUsuario.PRESTADOR.name());
+        prestador.setSenha(passwordEncoder.encode(prestador.getSenha()));
 
-            int rows = stmtUser.executeUpdate();
-            if (rows == 0) {
-                throw new SQLException("Falha ao inserir usuario");
-            }
-
-            try (java.sql.ResultSet rs = stmtUser.getGeneratedKeys()) {
-                if (rs.next()) {
-                    int idGerado = rs.getInt(1);
-                    try (PreparedStatement stmtPrest = con.prepareStatement(sqlPrestador)) {
-                        stmtPrest.setInt(1, idGerado);
-                        stmtPrest.setString(2, prestador.getTelefone());
-                        stmtPrest.setString(3, prestador.getEspecializacao());
-                        stmtPrest.setString(4, prestador.getCnpj());
-                        int pr = stmtPrest.executeUpdate();
-                        if (pr == 0) {
-                            throw new SQLException("Falha ao inserir prestador");
-                        }
-                    }
-                } else {
-                    throw new SQLException("ID gerado nao retornado");
-                }
-            }
-
-        } catch (SQLException e) {
+        try {
+            return prestadorRepository.save(prestador);
+        } catch (Exception e) {
             throw new ValidationException("Erro ao salvar prestador: " + e.getMessage());
         }
     }

@@ -42,8 +42,7 @@ public class ClienteService {
         }
 
         validarCliente(cliente);
-        
-        // Verifica se o cliente existe
+
         Optional<Cliente> existente = clienteRepository.findById(cliente.getId());
         if (!existente.isPresent()) {
             throw new ValidationException("Cliente não encontrado para atualização.");

@@ -12,11 +12,13 @@ import br.cefet.agendasaas.model.entidades.Prestador;
 
 @Repository
 public interface PrestadorRepository extends JpaRepository<Prestador, Integer> {
-    
+
     Optional<Prestador> findByEmail(String email);
-    
+
     @Query("SELECT p FROM Prestador p WHERE p.especializacao LIKE %:especializacao%")
     List<Prestador> findByEspecializacaoContaining(@Param("especializacao") String especializacao);
-    
+
     boolean existsByEmail(String email);
+
+    boolean existsByCnpj(String cnpj);
 }

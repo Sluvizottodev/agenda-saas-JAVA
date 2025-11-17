@@ -22,7 +22,7 @@ public class PrestadorService {
         validarPrestador(prestador);
         return prestadorRepository.save(prestador);
     }
-    
+
     private void validarPrestador(Prestador prestador) throws ValidationException {
         if (prestador == null) {
             throw new ValidationException("Prestador não pode ser nulo");
@@ -40,11 +40,11 @@ public class PrestadorService {
             throw new ValidationException("Especialização é obrigatória");
         }
     }
-    
+
     public List<Prestador> buscarPorEspecializacao(String especializacao) {
         return prestadorRepository.findByEspecializacaoContaining(especializacao);
     }
-    
+
     public Prestador buscarPorEmail(String email) throws ValidationException {
         if (email == null || email.trim().isEmpty()) {
             throw new ValidationException("Email é obrigatório.");
@@ -56,33 +56,32 @@ public class PrestadorService {
         }
         return prestador.get();
     }
-    
+
     public Prestador atualizarPrestador(Prestador prestador) throws ValidationException {
         if (prestador.getId() == null || prestador.getId() <= 0) {
             throw new ValidationException("ID do prestador é obrigatório para atualização");
         }
-        
+
         validarPrestador(prestador);
-        
-        // Verifica se o prestador existe
+
         Optional<Prestador> existente = prestadorRepository.findById(prestador.getId());
         if (!existente.isPresent()) {
             throw new ValidationException("Prestador não encontrado para atualização.");
         }
-        
+
         return prestadorRepository.save(prestador);
     }
-    
+
     public void removerPrestador(int id) throws ValidationException {
         if (id <= 0) {
             throw new ValidationException("ID do prestador deve ser positivo");
         }
-        
+
         Optional<Prestador> prestador = prestadorRepository.findById(id);
         if (!prestador.isPresent()) {
             throw new ValidationException("Prestador não encontrado para remoção.");
         }
-        
+
         prestadorRepository.deleteById(id);
     }
 

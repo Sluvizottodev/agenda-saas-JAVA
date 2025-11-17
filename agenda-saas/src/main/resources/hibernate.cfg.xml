@@ -19,4 +19,4 @@
         <mapping class="br.cefet.agendasaas.model.entidades.Pagamento"/>
         <mapping class="br.cefet.agendasaas.model.entidades.Notificacao"/>
     </session-factory>
-</>
+</hibernate-configuration>
