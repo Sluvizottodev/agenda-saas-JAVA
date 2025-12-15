@@ -15,13 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.cefet.agendasaas.dto.JwtResponse;
 import br.cefet.agendasaas.dto.LoginRequest;
+import br.cefet.agendasaas.dto.UsuarioAuthResponse;
 import br.cefet.agendasaas.model.entidades.Cliente;
 import br.cefet.agendasaas.model.entidades.Prestador;
+import br.cefet.agendasaas.model.entidades.Usuario;
 import br.cefet.agendasaas.service.AuthService;
 import br.cefet.agendasaas.service.CadastroService;
 import br.cefet.agendasaas.utils.ValidationException;
 import jakarta.validation.Valid;
 
+/**
+ * Controller para autenticação e autorização
+ * 
+ * Endpoints:
+ * - POST /login: Autentica usuário (CLIENTE ou PRESTADOR)
+ * - POST /register/cliente: Registra novo CLIENTE
+ * - POST /register/prestador: Registra novo PRESTADOR
+ * - GET /me: Retorna informações do usuário autenticado
+ * - POST /logout: Realiza logout
+ */
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -33,6 +45,9 @@ public class AuthController {
     @Autowired
     private CadastroService cadastroService;
 
+    /**
+     * Login de usuário (CLIENTE ou PRESTADOR)
+     */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
@@ -49,12 +64,15 @@ public class AuthController {
         }
     }
 
+    /**
+     * Registro de novo CLIENTE
+     */
     @PostMapping("/register/cliente")
     public ResponseEntity<?> registerCliente(@Valid @RequestBody Cliente cliente) {
         try {
             if (authService.userExists(cliente.getEmail())) {
                 Map<String, String> error = new HashMap<>();
-                error.put("error", "Email j\u00e1 cadastrado");
+                error.put("error", "Email já cadastrado");
                 return ResponseEntity.badRequest().body(error);
             }
 
@@ -75,12 +93,15 @@ public class AuthController {
         }
     }
 
+    /**
+     * Registro de novo PRESTADOR
+     */
     @PostMapping("/register/prestador")
     public ResponseEntity<?> registerPrestador(@Valid @RequestBody Prestador prestador) {
         try {
             if (authService.userExists(prestador.getEmail())) {
                 Map<String, String> error = new HashMap<>();
-                error.put("error", "Email j\u00e1 cadastrado");
+                error.put("error", "Email já cadastrado");
                 return ResponseEntity.badRequest().body(error);
             }
 
@@ -101,32 +122,43 @@ public class AuthController {
         }
     }
 
+    /**
+     * Retorna informações do usuário autenticado
+     * Requer token JWT válido
+     */
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         try {
             if (authentication == null) {
                 Map<String, String> error = new HashMap<>();
-                error.put("error", "N\u00e3o autenticado");
+                error.put("error", "Não autenticado");
                 return ResponseEntity.status(401).body(error);
             }
 
             String email = authentication.getName();
-            var user = authService.findUserByEmail(email);
+            Usuario user = authService.findUserByEmail(email);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("id", user.getId());
-            response.put("nome", user.getNome());
-            response.put("email", user.getEmail());
-            response.put("tipoUsuario", user instanceof Cliente ? "CLIENTE" : "PRESTADOR");
+            // Determina o role baseado no tipo de usuário
+            String role = user instanceof Cliente ? "CLIENTE" : "PRESTADOR";
+
+            UsuarioAuthResponse response = new UsuarioAuthResponse(
+                    user.getId(),
+                    user.getNome(),
+                    user.getEmail(),
+                    role);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, String> error = new HashMap<>();
-            error.put("error", "Erro ao buscar usu\u00e1rio");
+            error.put("error", "Erro ao buscar usuário");
             return ResponseEntity.status(500).body(error);
         }
     }
 
+    /**
+     * Logout do usuário
+     * Operação no lado do cliente (remover token)
+     */
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser() {
         Map<String, String> message = new HashMap<>();
