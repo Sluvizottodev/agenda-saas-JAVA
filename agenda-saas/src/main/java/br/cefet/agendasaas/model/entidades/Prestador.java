@@ -15,7 +15,7 @@ public class Prestador extends Usuario {
     @Column(nullable = true)
     private String especializacao;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String cnpj;
 
     public Prestador() {
