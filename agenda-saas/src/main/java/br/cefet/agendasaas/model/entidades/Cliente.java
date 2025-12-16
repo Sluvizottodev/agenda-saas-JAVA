@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("CLIENTE")
 public class Cliente extends Usuario {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String cpf;
 
     public Cliente() {

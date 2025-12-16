@@ -37,8 +37,7 @@ public class AgendamentoDAO {
     }
 
     public boolean atualizar(Agendamento agendamento) {
-        Agendamento updated = update(agendamento);
-        return updated != null;
+        return dao.update(agendamento) != null;
     }
 
     public boolean remover(int id) {

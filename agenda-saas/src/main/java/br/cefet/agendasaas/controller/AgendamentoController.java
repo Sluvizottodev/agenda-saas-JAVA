@@ -1,0 +1,101 @@
+package br.cefet.agendasaas.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.cefet.agendasaas.model.entidades.Agendamento;
+import br.cefet.agendasaas.model.entidades.Servico;
+import br.cefet.agendasaas.service.AgendamentoService;
+import br.cefet.agendasaas.utils.ValidationException;
+
+@RestController
+@RequestMapping("/api/agendamentos")
+public class AgendamentoController {
+
+    private final AgendamentoService agendamentoService;
+
+    public AgendamentoController(AgendamentoService agendamentoService) {
+        this.agendamentoService = agendamentoService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Agendamento>> listarAgendamentos(@RequestParam Integer usuarioId,
+            @RequestParam String tipoUsuario) {
+        try {
+            List<Agendamento> agendamentos = agendamentoService.listarAgendamentos(usuarioId, tipoUsuario);
+            return ResponseEntity.ok(agendamentos);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<String> criarAgendamento(@RequestBody Agendamento agendamento) {
+        try {
+            agendamentoService.criarAgendamento(agendamento);
+            return ResponseEntity.ok("Agendamento criado com sucesso!");
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno ao criar agendamento.");
+        }
+    }
+
+    @GetMapping("/servicos")
+    public ResponseEntity<List<Servico>> listarServicosDisponiveis() {
+        try {
+            List<Servico> servicos = agendamentoService.listarServicosDisponiveis();
+            return ResponseEntity.ok(servicos);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<String> atualizarAgendamento(@RequestBody Agendamento agendamento) {
+        try {
+            agendamentoService.atualizarAgendamento(agendamento);
+            return ResponseEntity.ok("Agendamento atualizado com sucesso!");
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno ao atualizar agendamento.");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Agendamento> buscarAgendamentoPorId(@PathVariable int id) {
+        try {
+            Agendamento agendamento = agendamentoService.buscarAgendamentoPorId(id);
+            return ResponseEntity.ok(agendamento);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removerAgendamento(@PathVariable int id) {
+        try {
+            agendamentoService.removerAgendamento(id);
+            return ResponseEntity.ok("Agendamento removido com sucesso!");
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno ao remover agendamento.");
+        }
+    }
+}
