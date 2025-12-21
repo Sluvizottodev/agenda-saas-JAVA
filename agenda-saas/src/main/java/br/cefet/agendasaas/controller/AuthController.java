@@ -76,12 +76,15 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(error);
             }
 
-            cadastroService.cadastrarCliente(cliente);
+            Cliente clienteSalvo = cadastroService.cadastrarCliente(cliente);
 
-            LoginRequest loginRequest = new LoginRequest(cliente.getEmail(), cliente.getSenha());
-            JwtResponse jwtResponse = authService.authenticateUser(loginRequest);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Conta criada com sucesso! Faça login para continuar.");
+            response.put("id", clienteSalvo.getId());
+            response.put("email", clienteSalvo.getEmail());
+            response.put("tipo", "CLIENTE");
 
-            return ResponseEntity.ok(jwtResponse);
+            return ResponseEntity.ok(response);
         } catch (ValidationException e) {
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
@@ -105,12 +108,15 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(error);
             }
 
-            cadastroService.cadastrarPrestador(prestador);
+            Prestador prestadorSalvo = cadastroService.cadastrarPrestador(prestador);
 
-            LoginRequest loginRequest = new LoginRequest(prestador.getEmail(), prestador.getSenha());
-            JwtResponse jwtResponse = authService.authenticateUser(loginRequest);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Conta criada com sucesso! Faça login para continuar.");
+            response.put("id", prestadorSalvo.getId());
+            response.put("email", prestadorSalvo.getEmail());
+            response.put("tipo", "PRESTADOR");
 
-            return ResponseEntity.ok(jwtResponse);
+            return ResponseEntity.ok(response);
         } catch (ValidationException e) {
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
