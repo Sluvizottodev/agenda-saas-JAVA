@@ -16,6 +16,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Filtro JWT que processa tokens de autenticação
+ * 
+ * - Extrai o token JWT da requisição
+ * - Valida o token
+ * - Carrega as informações do usuário (nome, email, role)
+ * - Define o contexto de segurança com as authorities (roles)
+ */
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
@@ -34,14 +42,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 List<SimpleGrantedAuthority> authorities = List.of(
                         new SimpleGrantedAuthority("ROLE_" + tipoUsuario.toUpperCase()));
 
+                // Cria o token de autenticação com email como principal e role como authority
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,
                         null, authorities);
+
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                logger.debug("Set Security context for user: " + username + " with role: " + tipoUsuario);
             }
         } catch (Exception e) {
-            System.err.println("Cannot set user authentication: " + e.getMessage());
+            logger.error("Cannot set user authentication: " + e.getMessage(), e);
         }
 
         filterChain.doFilter(request, response);
